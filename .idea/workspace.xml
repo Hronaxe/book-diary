@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84676898-8ebe-4e88-b83e-05391c8b52dd" name="Changes" comment="rename books to core">
-      <change afterPath="$PROJECT_DIR$/core/templates/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/register.html" afterDir="false" />
+    <list default="true" id="84676898-8ebe-4e88-b83e-05391c8b52dd" name="Changes" comment="add templates (placeholder)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_diary/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_diary/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_diary/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_diary/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,13 +123,22 @@
       <option name="project" value="LOCAL" />
       <updated>1747773195446</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add templates (placeholder)">
+      <option name="closed" value="true" />
+      <created>1747780239479</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1747780239479</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initialization" />
     <MESSAGE value="init books app" />
     <MESSAGE value="rename books to core" />
-    <option name="LAST_COMMIT_MESSAGE" value="rename books to core" />
+    <MESSAGE value="add templates (placeholder)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add templates (placeholder)" />
   </component>
 </project>
