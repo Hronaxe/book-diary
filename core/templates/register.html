@@ -1,6 +1,74 @@
 {% extends "base.html" %}
-<!-- Load crispy form -->
-{% load crispy_forms_tags %} {% block content %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .content-section {
+    max-width: 480px;
+    margin: 5rem auto;
+    padding: 2.5rem 2rem;
+    background-color: #fffefc;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    animation: slideFade 0.5s ease-out;
+  }
+
+  .content-section legend {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #5e412f;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group button {
+    background-color: #8b5e3c;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .form-group button:hover {
+    background-color: #5e412f;
+  }
+
+  .border-top.pt-3 {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .border-top.pt-3 a {
+    color: #8b5e3c;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .border-top.pt-3 a:hover {
+    text-decoration: underline;
+  }
+
+  @keyframes slideFade {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
 
 <div class="content-section">
   <!-- Sign up form -->
@@ -10,15 +78,15 @@
       <legend class="border-bottom mb-4">Join us today</legend>
       {{ form|crispy }}
     </fieldset>
-    <div class="form-group">
-      <button class="btn btn-outline-info" type="submit">Sign up</button>
+    <div class="form-group mt-3">
+      <button type="submit">Sign up</button>
     </div>
   </form>
 
   <!-- Sign in form -->
   <div class="border-top pt-3">
     <small class="text-muted">
-      Already have an account? <a class="ml-2" href="#">Sign in</a>
+      Already have an account? <a class="ml-2" href="{% url 'index' %}">Sign in</a>
     </small>
   </div>
 </div>
