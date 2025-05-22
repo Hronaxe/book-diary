@@ -1,93 +1,25 @@
-<!--PLACEHOLDER-->
-{% extends 'books/base.html' %}
-{% load static %}
+{% extends "base.html" %}
+<!-- Load crispy form -->
+{% load crispy_forms_tags %} {% block content %}
 
-{% block title %}Register - BookDiary{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'books/css/auth.css' %}">
-{% endblock %}
-
-{% block content %}
-<section class="auth-section">
-    <div class="container">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h1>Create an Account</h1>
-                <p>Join BookDiary to track your reading journey</p>
-            </div>
-            
-            <form method="post" class="auth-form">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="id_username">Username</label>
-                    {{ form.username }}
-                    {% if form.username.errors %}
-                        <div class="error-message">
-                            {% for error in form.username.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_email">Email</label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                        <div class="error-message">
-                            {% for error in form.email.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="id_first_name">First Name</label>
-                        {{ form.first_name }}
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="id_last_name">Last Name</label>
-                        {{ form.last_name }}
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_password1">Password</label>
-                    {{ form.password1 }}
-                    {% if form.password1.errors %}
-                        <div class="error-message">
-                            {% for error in form.password1.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    <div class="help-text">{{ form.password1.help_text }}</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_password2">Confirm Password</label>
-                    {{ form.password2 }}
-                    {% if form.password2.errors %}
-                        <div class="error-message">
-                            {% for error in form.password2.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
-            </div>
-        </div>
+<div class="content-section">
+  <!-- Sign up form -->
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Join us today</legend>
+      {{ form|crispy }}
+    </fieldset>
+    <div class="form-group">
+      <button class="btn btn-outline-info" type="submit">Sign up</button>
     </div>
-</section>
-{% endblock %}
+  </form>
+
+  <!-- Sign in form -->
+  <div class="border-top pt-3">
+    <small class="text-muted">
+      Already have an account? <a class="ml-2" href="#">Sign in</a>
+    </small>
+  </div>
+</div>
+{% endblock content %}
