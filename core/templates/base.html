@@ -9,23 +9,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet" />
 </head>
 <body>
-{% comment %}
   <header class="header">
     <div class="container header__container">
       <a href="{% url 'index' %}" class="header__logo">Читательский дневник</a>
       <nav class="nav">
         <ul class="nav__list">
+            {% if user.is_authenticated %}
+            <li><a class="nav-item nav-link" href="{% url 'profile' %}">Профиль</a></li>
+            <li><a class="nav-item nav-link" href="{% url 'logout' %}">Выйти</a></li>
+            {% else %}
+            <li><a class="nav-item nav-link" href="{% url 'login' %}">Авторизация</a></li>
+            <li><a class="nav-item nav-link" href="{% url 'register' %}">Регистрация</a></li>
+            {% endif %}
+          {% comment %}
           <li><a href="{% url 'profile' %}" class="nav__link">Профиль</a></li>
           <li><a href="{% url 'user_books' %}" class="nav__link">Мои книги</a></li>
           <li><a href="{% url 'catalog' %}" class="nav__link nav__link--active">Каталог книг</a></li>
            <li><a href="{% url 'genres' %}" class="nav__link">Жанры</a></li>
           <li><a href="{% url 'genres_and_authors' %}" class="nav__link">Информация</a></li>
           <li><a href="{% url 'diary' %}" class="nav__link">Дневник</a></li>
+          {% endcomment %}
         </ul>
       </nav>
     </div>
   </header>
-{% endcomment %}
 
 
   <div class="main container">
