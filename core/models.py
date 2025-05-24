@@ -39,3 +39,36 @@ class Quote(models.Model):
 
     def __str__(self):
         return f"Quote by {self.user.name} for {self.book.title}"
+
+class UserBookStatus(models.Model):
+    STATUS_CHOICES = (
+        ('reading', 'Читаю'),
+        ('read', 'Прочитал'),
+        ('planned', 'В планах'),
+        ('dropped', 'Брошено'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+
+    class Meta:
+        unique_together = ('user', 'book')
+
+    def __str__(self):
+        return f"{self.user.name} - {self.book.title} - {self.status}"
+
+class ReadingDiaryEntry(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    emotions_rating = models.PositiveSmallIntegerField(default=1)  # 1-5
+    plot_originality = models.PositiveSmallIntegerField(default=1)  # 1-5
+    character_development = models.PositiveSmallIntegerField(default=1)
+    world_building = models.PositiveSmallIntegerField(default=1)
+    romance = models.PositiveSmallIntegerField(default=1)
+    humor = models.PositiveSmallIntegerField(default=1)
+    meaning = models.PositiveSmallIntegerField(default=1)
+    summary = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Diary entry by {self.user.name} for {self.book.title}"

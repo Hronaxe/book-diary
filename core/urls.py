@@ -8,7 +8,7 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.home, name="index"),
+    path("", views.catalog, name="index"),
     path("register", views.registration, name = "register"),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', views.custom_logout_view, name='logout'),
