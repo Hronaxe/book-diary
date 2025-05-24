@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
+from user_books import views as user_books_views
 from users import views as user_views
 from . import views
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path('catalog/', views.catalog, name='catalog'),
     path('info/', views.genres_and_authors, name='genres_and_authors'),
     path('books/<int:pk>/', views.book_detail, name='book_detail'),
+    path('profile/books', user_books_views.user_books, name='user_books'),
 ]
 
 if settings.DEBUG:
