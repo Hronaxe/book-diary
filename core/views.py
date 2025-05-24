@@ -34,7 +34,7 @@ def catalog(request):
         books = books.filter(author_id=author_id)
 
     if year:
-        books = books.filter(publication_year=year)
+        books = books.filter(year=year)
 
     context = {
         'books': books,
