@@ -18,12 +18,12 @@ class Book(models.Model):
     COVER_UPLOAD_PATH = 'covers/'
 
     title = models.CharField(max_length=255, verbose_name='Название')
-    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, verbose_name='Автор')
     publisher = models.CharField(max_length=255, verbose_name='Издательство')
     year = models.PositiveIntegerField(verbose_name='Год издания')
     page_count = models.PositiveIntegerField(verbose_name='Количество страниц')
     age_limit = models.CharField(max_length=10, verbose_name='Возрастное ограничение')
-    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
+    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, verbose_name='Жанр')
     annotation = models.TextField(verbose_name='Аннотация')
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
