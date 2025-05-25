@@ -16,6 +16,7 @@ class Genre(models.Model):
 
 class Book(models.Model):
     COVER_UPLOAD_PATH = 'covers/'
+    TEXT_UPLOAD_PATH = 'texts'
 
     title = models.CharField(max_length=255, verbose_name='Название')
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, verbose_name='Автор')
@@ -26,6 +27,7 @@ class Book(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, verbose_name='Жанр')
     annotation = models.TextField(verbose_name='Аннотация')
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    text_file = models.FileField(upload_to=TEXT_UPLOAD_PATH, blank=True, null=True, verbose_name='Файл')
 
     cover = models.ImageField(upload_to=COVER_UPLOAD_PATH, verbose_name='Обложка')
     def __str__(self):
