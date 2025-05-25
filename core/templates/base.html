@@ -154,7 +154,7 @@
     </nav>
   </div>
 </header>
-
+{% if user.is_authenticated %}
 <div class="menu">
   <input type="checkbox" id="burger-checkbox" class="burger-checkbox">
   <label for="burger-checkbox" class="burger"></label>
@@ -165,6 +165,7 @@
     <li><a href="{% url 'index' %}" class="nav__link">------</a></li>
   </ul>
 </div>
+{% endif %}
 
 <div class="main container">
   {% block content %}{% endblock %}
