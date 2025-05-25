@@ -15,7 +15,6 @@
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
   font-family: var(--font-primary);
@@ -64,6 +63,7 @@ a:hover, a:focus {
   font-size: 1.8rem;
   color: var(--color-brown-dark);
   color: white;
+  margin-left: 2%;
 }
 
 .nav__list {
@@ -1743,7 +1743,4 @@ body.dark-theme {
   height: 100%;
   width: 100%;
 }
-/* .book-card img{
-  width: 100%;
-  height: 90%;
-} */
+
