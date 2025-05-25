@@ -258,14 +258,15 @@
       {% endif %}
     </div>
   </div>
+  <a href="{% url 'add_diary_entry' book.id  %}" class="btn btn-primary">
+    Добавить в дневник
+  </a>
 
   <div class="book-detail__annotation">
     <h3>Аннотация</h3>
     <p>{{ book.annotation|linebreaks }}</p>
   </div>
-  <a href="{% url 'add_diary_entry' book.id  %}" class="btn btn-primary">
-    Добавить в читательский дневник
-  </a>
+
 
   {% if book.text_file %}
   <div class="book-detail__download">

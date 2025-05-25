@@ -111,7 +111,7 @@
   <h2>Авторы</h2>
   <div class="slider slider-authors">
     {% for author in authors %}
-      <a href="{% url 'genres_and_authors' %}#author-{{ author.id }}" class="slider-item" tabindex="0" aria-label="Автор {{ author.name }}">
+      <a href="{% url 'catalog' %}?author={{ author.id }}" class="slider-item" tabindex="0" aria-label="Автор {{ author.name }}">
         {% if author.photo %}
           <img src="{{ author.photo.url }}" alt="Фото автора {{ author.name }}" class="slider-item__image" loading="lazy" />
         {% else %}
@@ -125,7 +125,7 @@
   <h2>Жанры</h2>
   <div class="slider slider-genres">
     {% for genre in genres %}
-      <a href="{% url 'genres_and_authors' %}#genre-{{ genre.id }}" class="slider-item" tabindex="0" aria-label="Жанр {{ genre.name }}">
+      <a href="{% url 'catalog' %}?genre={{ genre.id }}" class="slider-item" tabindex="0" aria-label="Жанр {{ genre.name }}">
         <div class="slider-item__placeholder genre-placeholder">{{ genre.name|slice:":1" }}</div>
         <span class="slider-item__name">{{ genre.name }}</span>
       </a>
