@@ -17,7 +17,7 @@
       <p class="book-detail__year">Год: {{ book.year }}</p>
       <p class="book-detail__pages">Страниц: {{ book.pages }}</p>
       <p class="book-detail__age-limit">Возрастное ограничение: {{ book.age_limit }}</p>
-
+{% comment %}
       {% if user.is_authenticated %}
       <form method="post" action="{% url 'set_status' book.id %}" class="book-detail__status-form">
         {% csrf_token %}
@@ -31,6 +31,7 @@
         <button type="submit" class="btn btn--primary">Сохранить</button>
       </form>
       {% endif %}
+{% endcomment %}
     </div>
   </div>
 
