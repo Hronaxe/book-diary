@@ -223,7 +223,9 @@
     .book-detail__info {
       font-size: 0.95rem;
     }
-
+    .btn-primary:hover{ 
+      color: #a37853;
+    }
   }
 </style>
 <section class="book-detail" aria-labelledby="book-title">
@@ -258,7 +260,7 @@
       {% endif %}
     </div>
   </div>
-  <a href="{% url 'add_diary_entry' book.id  %}" class="btn btn-primary">
+  <a href="{% url 'add_diary_entry' book.id  %}" class="btn btn-primary" style="color: #8f6443;">
     Добавить в дневник
   </a>
 

@@ -24,7 +24,7 @@
   }
 
   .burger {
-    position: fixed; /* Изменено на fixed для постоянной видимости */
+    position: fixed; 
     top: 20px;
     left: 20px;
     z-index: 1000;
@@ -75,7 +75,7 @@
   .menu-list {
     top: 0;
     left: 0;
-    position: fixed; /* Изменено на fixed для корректного отображения */
+    position: fixed; 
     display: grid;
     gap: 2px;
     padding: 250px 10px;
@@ -122,15 +122,14 @@
     transform: translateX(0);
   }
 
-  /* Сдвиг контента при открытом меню */
   .burger-checkbox:checked ~ .header,
   .burger-checkbox:checked ~ .main,
   .burger-checkbox:checked ~ .footer {
-    margin-left: 200px; /* Соответствует ширине меню */
+    margin-left: 200px; 
   }
 
   .header, .main, .footer {
-    transition: margin-left .3s; /* Плавный переход для сдвига */
+    transition: margin-left .3s; 
   }
 </style>
 
@@ -139,10 +138,6 @@
     <a href="{% url 'index' %}" class="header__logo">Читательский дневник</a>
     <nav class="nav">
       <ul class="nav__list">
-        <!-- <li><a href="{% url 'index' %}" class="nav__link">Добавить книгу</a></li>
-        <li><a href="{% url 'index' %}" class="nav__link">Жанры</a></li>
-        <li><a href="{% url 'index' %}" class="nav__link">Информация</a></li>
-        <li><a href="{% url 'index' %}" class="nav__link">Дневник</a></li> -->
         {% if user.is_authenticated %}
           <li><a class="nav-item nav-link" href="{% url 'profile' %}"><i class="fas fa-user" style="transform: scale(1.1);"></i></a></li>
           <li><a class="nav-item nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-in-alt" style="transform: scale(1.3);"></i></a></li>
@@ -162,7 +157,6 @@
     <li><a href="{% url 'user_books' %}" class="nav__link">Добавить книгу</a></li>
     <li><a href="{% url 'profile' %}" class="nav__link">Профиль</a></li>
     <li><a href="{% url 'diary' %}" class="nav__link">Дневник</a></li>
-    <li><a href="{% url 'index' %}" class="nav__link">------</a></li>
   </ul>
 </div>
 {% endif %}
