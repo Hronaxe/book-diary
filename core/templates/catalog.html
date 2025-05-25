@@ -13,7 +13,7 @@
       <form method="GET" action="{% url 'catalog' %}" id="filter-form" class="filter-form">
 
         <div class="filter-form__group">
-          <label for="search" class="filter-form__label">🔍 Поиск</label>
+          <label for="search" class="filter-form__label"> Поиск</label>
           <input
             type="search"
             id="search"
@@ -26,7 +26,7 @@
         </div>
 
         <div class="filter-form__group">
-          <label for="genre" class="filter-form__label">📚 Жанр</label>
+          <label for="genre" class="filter-form__label"> Жанр</label>
           <select name="genre" id="genre" class="filter-form__select" title="Выберите жанр">
             <option value="">Все жанры</option>
             {% for genre in genres %}
@@ -36,7 +36,7 @@
         </div>
 
         <div class="filter-form__group">
-          <label for="author" class="filter-form__label">✍️ Автор</label>
+          <label for="author" class="filter-form__label"> Автор</label>
           <select name="author" id="author" class="filter-form__select" title="Выберите автора">
             <option value="">Все авторы</option>
             {% for author in authors %}
@@ -46,7 +46,7 @@
         </div>
 
         <div class="filter-form__group">
-          <label for="year" class="filter-form__label">📅 Год издания</label>
+          <label for="year" class="filter-form__label"> Год издания</label>
           <input
             type="number"
             name="year"
