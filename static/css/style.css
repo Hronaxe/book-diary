@@ -743,6 +743,7 @@ a:focus {
   color: var(--color-text-primary);
   background-color: var(--color-white);
   font-family: 'Montserrat', sans-serif;
+  border-radius: 10px;
 }
 
 .filter-form__input:focus,
@@ -752,7 +753,6 @@ a:focus {
   box-shadow: 0 0 6px var(--color-accent);
 }
 
-/* --- Кнопки --- */
 .filter-form__buttons {
   display: flex;
   gap: 15px;

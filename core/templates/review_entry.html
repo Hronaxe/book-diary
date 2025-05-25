@@ -1,9 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+  .filter-form__label{
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 25px rgb(105, 105, 105);
+  }
+  .filter-form__label p{
+    /* background: ; */
+    /* border: 1px solid black; */
+    padding: 5px;
+    border-radius: 10px ;
+    /* box-shadow: 0px 0px 5px rgb(105, 105, 105); */
+    width: auto;
+  }
+  .filter-form__label input{
+    width: auto;
+    display: flex;
+    align-content: end;
+    /* border: none; */
+  }
+</style>
+
+  <form method="post" class=" filter-form__label">
   <h2>Добавить запись в дневник ({{book.title}})</h2>
 
-  <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
 
