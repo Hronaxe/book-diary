@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
 from user_books.forms import AuthorForm
-from .models import Book, Genre, Author
+from .models import Book, Genre, Author, UserBookStatus
 
 
 def home(request):
@@ -56,7 +56,13 @@ def genres_and_authors(request):
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
-    return render(request, 'book_detail.html', {'book': book})
+    status_choices = UserBookStatus.STATUS_CHOICES
+    try:
+        user_status = UserBookStatus.objects.get(user=request.user, book=book).status
+    except UserBookStatus.DoesNotExist:
+        user_status = None
+
+    return render(request, 'book_detail.html', {'book': book, 'status_choices': status_choices, 'user_status': user_status})
 
 def profile(request):
     return render(request, 'base.html')
@@ -70,6 +76,17 @@ def genres_and_authors(request):
 
 def diary(request):
     return render(request, 'base.html')
+
+def set_status(request, pk):
+    if request.method == 'POST':
+        book = get_object_or_404(Book, pk=pk)
+        status = request.POST.get('status')
+        obj, created = UserBookStatus.objects.update_or_create(
+            user=request.user,
+            book=book,
+            defaults={'status': status},
+        )
+    return redirect('book_detail', pk=pk)
 
 
 
