@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} {% block content %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".foreign-key-popup-select").forEach(function (select) {
+        const url = select.getAttribute("data-popup-url");
+        console.log(url)
+        if (!url) return;
+
+        const plus = document.createElement("a");
+        plus.href = "#";
+        plus.innerHTML = "➕";
+        plus.style.marginLeft = "10px";
+
+        plus.addEventListener("click", function (e) {
+            e.preventDefault();
+            const popup = window.open(url, "popup", "height=500,width=800,resizable=yes,scrollbars=yes");
+            popup.focus();
+        });
+
+        select.parentNode.appendChild(plus);
+    });
+});
+</script>
+
+<script>
+function dismissAddAnotherPopup(win, newId, newRepr, fieldName) {
+    const select = document.querySelector(`select[name="${fieldName}"]`);
+    if (select) {
+        const option = new Option(newRepr, newId, true, true);
+        select.add(option);
+        select.value = newId;
+    }
+    win.close();
+}
+</script>
+
+
+
+<h2>Добавить книгу</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Добавить книгу</legend>
+        {{ form|crispy }}
+    </fieldset>
+    <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Сохранить</button>
+    </div>
+</form>
+
+{% endblock %}
