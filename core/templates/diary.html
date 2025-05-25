@@ -1,6 +1,105 @@
 {% extends 'base.html' %}
 {% block title %}Дневник чтения — Читательский дневник{% endblock %}
 {% block content %}
+<style>
+.diary {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.diary h2 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filter-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-nav a {
+    text-decoration: none;
+    color: #555;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.filter-nav a:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.filter-nav a.active {
+    background-color: #b89b6a;
+    color: white;
+    border-color: #b89b6a;
+}
+
+.book-list {
+    list-style: none;
+    padding: 0;
+}
+
+.book-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.book-list li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1.1rem;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.book-list li a:hover {
+    color: #111111;
+}
+
+.book-list li a strong {
+    font-weight: 600;
+}
+
+.book-list li:empty::before {
+    content: "Нет книг по данному статусу.";
+    color: #777;
+    font-style: italic;
+}
+
+@media (max-width: 600px) {
+    .diary {
+        padding: 10px;
+    }
+
+    .diary h2 {
+        font-size: 1.5rem;
+    }
+
+    .filter-nav {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .filter-nav a {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+
+    .book-list li a {
+        font-size: 1rem;
+    }
+}
+</style>
 <section class="diary">
   <h2>Читательский дневник</h2>
 
