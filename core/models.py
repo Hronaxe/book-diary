@@ -67,7 +67,7 @@ class ReadingDiaryEntry(models.Model):
     romance = models.PositiveSmallIntegerField(default=1)
     humor = models.PositiveSmallIntegerField(default=1)
     meaning = models.PositiveSmallIntegerField(default=1)
-    summary = models.TextField(blank=True)
+    #summary = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

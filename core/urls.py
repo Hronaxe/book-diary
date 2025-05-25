@@ -22,6 +22,7 @@ urlpatterns = [
     path('profile/add_genre_popup', user_books_views.add_genre_popup, name='add_genre_popup'),
     path('profile/diary', views.diary, name='diary'),
     path('books/<int:pk>/set_status/', views.set_status, name='set_status'),
+    path('profile/add_diary_entry/<int:pk>', views.add_diary_entry, name='add_diary_entry')
 ]
 
 if settings.DEBUG:

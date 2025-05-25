@@ -1,8 +1,10 @@
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
 from user_books.forms import AuthorForm
+from .forms import ReadingDiaryEntryForm
 from .models import Book, Genre, Author, UserBookStatus
 
 
@@ -64,12 +66,6 @@ def book_detail(request, pk):
 
     return render(request, 'book_detail.html', {'book': book, 'status_choices': status_choices, 'user_status': user_status})
 
-def profile(request):
-    return render(request, 'base.html')
-
-def user_books(request):
-    return render(request, 'base.html')
-
 
 def genres_and_authors(request):
     return render(request, 'base.html')
@@ -97,6 +93,33 @@ def set_status(request, pk):
             defaults={'status': status},
         )
     return redirect('book_detail', pk=pk)
+
+@login_required
+def add_diary_entry(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+
+    if request.method == 'POST':
+        form = ReadingDiaryEntryForm(request.POST)
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.user = request.user
+            entry.book = book
+            entry.save()
+
+            obj, created = UserBookStatus.objects.update_or_create(
+                user=request.user,
+                book=book,
+                defaults={'status': 'read'},
+            )
+
+            return redirect('book_detail', pk=book.id)
+    else:
+        form = ReadingDiaryEntryForm(initial={'book': book})
+
+    return render(request, 'review_entry.html', {
+        'form': form,
+        'book': book,
+    })
 
 
 
