@@ -75,7 +75,17 @@ def genres_and_authors(request):
     return render(request, 'base.html')
 
 def diary(request):
-    return render(request, 'base.html')
+    status_filter = request.GET.get('status')
+
+    qs = UserBookStatus.objects.filter(user=request.user)
+    if status_filter in dict(UserBookStatus.STATUS_CHOICES):
+        qs = qs.filter(status=status_filter)
+
+    return render(request, 'diary.html', {
+        'statuses': UserBookStatus.STATUS_CHOICES,
+        'user_books': qs.select_related('book'),
+        'current_filter': status_filter,
+    })
 
 def set_status(request, pk):
     if request.method == 'POST':

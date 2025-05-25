@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Дневник чтения — Читательский дневник{% endblock %}
+{% block content %}
+<section class="diary">
+  <h2>Читательский дневник</h2>
+
+<nav class="filter-nav">
+    <a href="{% url 'diary' %}" {% if not current_filter %}class="active"{% endif %}>Все</a>
+    {% for value, label in statuses %}
+        <a href="{% url 'diary' %}?status={{ value }}" {% if current_filter == value %}class="active"{% endif %}>
+            {{ label }}
+        </a>
+    {% endfor %}
+</nav>
+
+<ul class="book-list">
+    {% for item in user_books %}
+        <li>
+            <a href = "{% url 'book_detail' item.book.id %}"><strong>{{ item.book.title }}</strong> — {{ item.get_status_display }}</a>
+        </li>
+    {% empty %}
+        <li>Нет книг по данному статусу.</li>
+    {% endfor %}
+</ul>
+</section>
+{% endblock %}
