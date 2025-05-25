@@ -17,19 +17,20 @@
       <p class="book-detail__year">Год: {{ book.year }}</p>
       <p class="book-detail__pages">Страниц: {{ book.pages }}</p>
       <p class="book-detail__age-limit">Возрастное ограничение: {{ book.age_limit }}</p>
-{% comment %}
       {% if user.is_authenticated %}
       <form method="post" action="{% url 'set_status' book.id %}" class="book-detail__status-form">
-        {% csrf_token %}
-        <label for="status-select">Статус чтения:</label>
-        <select name="status" id="status-select" class="book-detail__status-select">
-          <option value="planned" {% if user_status == 'planned' %}selected{% endif %}>В планах</option>
-          <option value="reading" {% if user_status == 'reading' %}selected{% endif %}>Читаю</option>
-          <option value="read" {% if user_status == 'read' %}selected{% endif %}>Прочитал</option>
-          <option value="dropped" {% if user_status == 'dropped' %}selected{% endif %}>Брошено</option>
-        </select>
-        <button type="submit" class="btn btn--primary">Сохранить</button>
-      </form>
+    {% csrf_token %}
+    <label for="status-select">Статус чтения:</label>
+    <select name="status" id="status-select" class="book-detail__status-select">
+        {% for value, label in status_choices %}
+            <option value="{{ value }}" {% if user_status == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn--primary">Сохранить</button>
+</form>
+
       {% endif %}
 {% endcomment %}
     </div>
