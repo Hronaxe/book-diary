@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Авторы{% endblock %}
+
+{% block content %}
+<style>
+  .authors-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .author-bubble {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #d4bfa3;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    transition: transform 0.3s;
+  }
+
+  .author-bubble:hover {
+    transform: scale(1.05);
+    background: #b89b6a;
+    cursor: pointer;
+  }
+</style>
+
+<h2>Авторы</h2>
+<div class="authors-wrapper">
+  {% for author in authors %}
+    <div class="author-bubble">
+      {{ author.name }}
+    </div>
+  {% empty %}
+    <p>Нет авторов</p>
+  {% endfor %}
+</div>
+{% endblock %}

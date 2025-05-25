@@ -14,6 +14,15 @@ def home(request):
 def registration(request):
     return render(request, 'register.html')
 
+
+def author(req):
+    authors = Author.objects.all()
+    return render(req, 'author.html', {'authors': authors})
+
+def genres(req):
+    genres = Genre.objects.all()
+    return render(req, 'genres.html', {'genres': genres})
+
 def custom_logout_view(request):
     logout(request)
     return redirect('/')
@@ -120,6 +129,5 @@ def add_diary_entry(request, pk):
         'form': form,
         'book': book,
     })
-
 
 
