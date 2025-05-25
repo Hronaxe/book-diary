@@ -1,11 +1,51 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %} {% block content %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f5f5dc; /* бежевый */
+        color: #3e2723; /* тёмно-коричневый */
+    }
+
+    h2, legend {
+        color: #5d4037; /* коричневый */
+    }
+
+    form {
+        background-color: #ffffff; /* белый */
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        margin: auto;
+    }
+
+    .btn-outline-info {
+        border-color: #5d4037;
+        color: #5d4037;
+    }
+
+    .btn-outline-info:hover {
+        background-color: #5d4037;
+        color: white;
+    }
+
+    .form-group {
+        margin-top: 1rem;
+    }
+
+    select, input, textarea {
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+    }
+</style>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".foreign-key-popup-select").forEach(function (select) {
         const url = select.getAttribute("data-popup-url");
-        console.log(url)
         if (!url) return;
 
         const plus = document.createElement("a");
@@ -37,18 +77,14 @@ function dismissAddAnotherPopup(win, newId, newRepr, fieldName) {
 </script>
 
 
-
-<h2>Добавить книгу</h2>
-
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset class="form-group">
-        <legend class="border-bottom mb-4">Добавить книгу</legend>
+        <legend class="border-bottom mb-4"><h1>Добавить книгу</h1></legend>
         {{ form|crispy }}
     </fieldset>
     <div class="form-group">
         <button class="btn btn-outline-info" type="submit">Сохранить</button>
     </div>
 </form>
-
 {% endblock %}
