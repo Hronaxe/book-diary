@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84676898-8ebe-4e88-b83e-05391c8b52dd" name="Changes" comment="initialization">
-      <change afterPath="$PROJECT_DIR$/books/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/book-diary.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/book-diary.iml" afterDir="false" />
+    <list default="true" id="84676898-8ebe-4e88-b83e-05391c8b52dd" name="Changes" comment="update filter">
+      <change afterPath="$PROJECT_DIR$/core/templates/user_books/add_author_popup.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/templates/user_books/add_genre_popup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_diary/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_diary/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_diary/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/book_diary/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/user_books/user_books.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/user_books/user_books.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_books/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_books/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_books/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_books/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,28 +22,34 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Hronaxe"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Hronaxe&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Hronaxe/book-diary.git",
-    "accountId": "4111cee5-8d96-498f-a053-898ecf8f6321"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Hronaxe/book-diary.git&quot;,
+    &quot;accountId&quot;: &quot;4111cee5-8d96-498f-a053-898ecf8f6321&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2xJBqSsVwbAafIyYioTWLABzDwq" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -48,13 +57,28 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "add-user-books",
+    "last_opened_file_path": "E:/dev/book-diary/core/templates/user_books",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\dev\book-diary\core\templates\user_books" />
+      <recent name="E:\dev\book-diary\core\templates" />
+      <recent name="E:\dev\book-diary\media\covers" />
+      <recent name="E:\dev\book-diary" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\dev\book-diary\core\templates\user_books" />
+      <recent name="E:\dev\book-diary\core\templates\users" />
+      <recent name="E:\dev\book-diary\core\templates" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -94,11 +118,167 @@
       <option name="project" value="LOCAL" />
       <updated>1747647287586</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="init books app">
+      <option name="closed" value="true" />
+      <created>1747658555818</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747658555818</updated>
+    </task>
+    <task id="LOCAL-00005" summary="rename books to core">
+      <option name="closed" value="true" />
+      <created>1747773195446</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1747773195446</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add templates (placeholder)">
+      <option name="closed" value="true" />
+      <created>1747780239479</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1747780239479</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add book model">
+      <option name="closed" value="true" />
+      <created>1747848769632</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1747848769632</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add registration">
+      <option name="closed" value="true" />
+      <created>1747880914289</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1747880914289</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add registration">
+      <option name="closed" value="true" />
+      <created>1747923642685</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1747923642685</updated>
+    </task>
+    <task id="LOCAL-00010" summary="change project language">
+      <option name="closed" value="true" />
+      <created>1747927284636</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1747927284636</updated>
+    </task>
+    <task id="LOCAL-00011" summary="change register">
+      <option name="closed" value="true" />
+      <created>1748012936138</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1748012936138</updated>
+    </task>
+    <task id="LOCAL-00012" summary="finish logout">
+      <option name="closed" value="true" />
+      <created>1748014403717</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1748014403717</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add catalog">
+      <option name="closed" value="true" />
+      <created>1748044902992</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1748044902992</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add catalog">
+      <option name="closed" value="true" />
+      <created>1748045051928</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748045051928</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add book detail and models">
+      <option name="closed" value="true" />
+      <created>1748117495745</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748117495745</updated>
+    </task>
+    <task id="LOCAL-00016" summary="app init">
+      <option name="closed" value="true" />
+      <created>1748118635191</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1748118635191</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add user_books">
+      <option name="closed" value="true" />
+      <created>1748124004004</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1748124004004</updated>
+    </task>
+    <task id="LOCAL-00018" summary="update filter">
+      <option name="closed" value="true" />
+      <created>1748124806711</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1748124806711</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/add-templates" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initialization" />
-    <option name="LAST_COMMIT_MESSAGE" value="initialization" />
+    <MESSAGE value="init books app" />
+    <MESSAGE value="rename books to core" />
+    <MESSAGE value="add templates (placeholder)" />
+    <MESSAGE value="add book model" />
+    <MESSAGE value="add registration" />
+    <MESSAGE value="change project language" />
+    <MESSAGE value="change register" />
+    <MESSAGE value="finish logout" />
+    <MESSAGE value="add catalog" />
+    <MESSAGE value="add book detail and models" />
+    <MESSAGE value="app init" />
+    <MESSAGE value="add user_books" />
+    <MESSAGE value="update filter" />
+    <option name="LAST_COMMIT_MESSAGE" value="update filter" />
   </component>
 </project>

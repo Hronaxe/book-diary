@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Профиль пользователя {{ user.username }}{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f9f7f1;
+        margin: 0;
+        padding: 0 0rem;
+    }
+
+    #profile-card {
+        max-width: 720px;
+        margin: 2.5rem auto;
+        padding: 2rem 2.5rem;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    /* Flex container */
+    #profile-card > div.flex {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    /* Аватар */
+    .profile-avatar {
+        width: 112px;
+        height: 112px;
+        background: linear-gradient(135deg, #a57c4e, #6e4b1c);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.2);
+        flex-shrink: 0;
+    }
+
+    /* Информация */
+    .flex-1 {
+        flex: 1;
+        min-width: 220px;
+    }
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #4b3b1b;
+        margin: 0 0 0.25rem 0;
+        letter-spacing: 0.03em;
+    }
+
+    p {
+        margin: 0.2rem 0;
+        color: #7a6a49;
+        font-size: 0.9rem;
+    }
+
+    #toggle-email {
+        background: none;
+        border: none;
+        color: #a57c4e;
+        cursor: pointer;
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
+        padding: 0;
+        transition: color 0.3s ease;
+    }
+
+    #toggle-email:hover,
+    #toggle-email:focus {
+        color: #6e4b1c;
+        outline: none;
+        text-decoration: underline;
+    }
+
+    #email-text {
+        color: #555;
+        font-size: 0.95rem;
+        margin-top: 0.4rem;
+        font-style: italic;
+    }
+
+    /* Статистика */
+    .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+        background: #f2ede6;
+        padding: 1rem 2rem;
+        border-radius: 15px;
+        box-shadow: inset 0 0 8px rgba(165, 124, 78, 0.15);
+        text-align: center;
+        color: #8b7c5a;
+    }
+
+    .profile-stats div p:first-child {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #5e4b1a;
+        margin-bottom: 0.25rem;
+    }
+
+    /* О себе */
+    .profile-about {
+        margin-top: 2.5rem;
+        color: #6e5a31;
+    }
+
+    .profile-about h3 {
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 2px solid #a57c4e;
+        display: inline-block;
+        padding-bottom: 0.15rem;
+    }
+
+    .profile-about p {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #6e5a31;
+    }
+
+    /* Анимация появления */
+    #profile-card.opacity-100 {
+        opacity: 1 !important;
+        transform: scale(1) !important;
+    }
+
+    /* Адаптив */
+    @media (max-width: 640px) {
+        #profile-card > div.flex {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .flex-1 {
+            min-width: auto;
+        }
+    }
+</style>
+
+<div id="profile-card" class="profile-card opacity-0 scale-95 transition duration-500 ease-out">
+    <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+        <!-- Аватар -->
+        <div class="profile-avatar">
+            {{ user.username|slice:":1"|upper }}
+        </div>
+
+        <!-- Инфо -->
+        <div class="flex-1">
+            <h2>{{ user.username }}</h2>
+            <p>Дата регистрации: {{ user.date_joined|date:"d E Y" }}</p>
+            <button id="toggle-email" aria-expanded="false" aria-controls="email-text">
+                Показать email
+            </button>
+            <p id="email-text" class="hidden">📧 {{ user.email }}</p>
+        </div>
+    </div>
+
+    <!-- Статистика -->
+    <div class="profile-stats">
+        <div>
+            <p>0</p>
+            <p>Книг</p>
+        </div>
+        <div>
+            <p>0</p>
+            <p>Цитат</p>
+        </div>
+        <div>
+            <p>0</p>
+            <p>Друзей</p>
+        </div>
+    </div>
+
+    <!-- О себе -->
+    <div class="profile-about">
+        <h3>О себе</h3>
+        <p>Пока ничего не указано.</p>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const card = document.getElementById('profile-card');
+        card.classList.remove('opacity-0', 'scale-95');
+        card.classList.add('opacity-100', 'scale-100');
+    });
+
+    document.getElementById('toggle-email').addEventListener('click', function () {
+        const emailText = document.getElementById('email-text');
+        emailText.classList.toggle('hidden');
+        this.textContent = emailText.classList.contains('hidden') ? 'Показать email' : 'Скрыть email';
+    });
+</script>
+{% endblock %}
