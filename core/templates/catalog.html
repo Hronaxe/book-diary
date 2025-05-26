@@ -3,6 +3,38 @@
 {% block title %}Каталог книг — Читательский дневник{% endblock %}
 
 {% block content %}
+<style>
+         @media (max-width: 768px) {
+            .sliders{
+              width:100%;
+            }
+        }
+        .sliders{
+            width:340%;
+
+        }
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-form__buttons {
+                flex-direction: column;
+            }
+            .sliders{
+              width:100%;
+            }
+        }
+        @media (max-width: 1024px) {
+          .sliders{
+            width: 100%;
+          }
+        }
+        .book-card__author{
+          text-align: center;
+        }
+
+</style>
 <section class="catalog">
   <h2 class="catalog__title">Каталог книг</h2>
 
@@ -63,6 +95,52 @@
           <a href="{% url 'catalog' %}" class="btn btn--reset">Сбросить</a>
         </div>
       </form>
+
+<br>
+  
+<h4 style="font-size: 1.5em; font-weight: 700; margin-bottom: 1em; color: #4a3c31; border-bottom: 2px solid #cbbfa5; padding-bottom: 0.3em; text-align: center;">
+  Рекомендуем к прочтению
+</h4>
+
+{% if random_books %}
+  <div class="sidebar-random-books" style="display: flex; flex-direction: column; gap: 16px; margin-top: 0.5em;">
+    {% for book in random_books %}
+      <article class="book-card--sidebar" tabindex="0" aria-label="Книга {{ book.title }}"
+               style="background: #fefbf7; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgb(0 0 0 / 0.08); 
+                      display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: box-shadow 0.3s ease;">
+        
+        {% if book.cover %}
+          <img src="{{ book.cover.url }}" alt="Обложка книги {{ book.title }}" loading="lazy"
+               style="width: 100%; max-width: 120px; height: 160px; object-fit: contain; background-color: #f9f5f0; border-radius: 6px; box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);" />
+        {% else %}
+          <img src="{% static 'images/default_cover.jpg' %}" alt="Обложка книги {{ book.title }}" loading="lazy"
+               style="width: 100%; max-width: 120px; height: 160px; object-fit: contain; background-color: #f9f5f0; border-radius: 6px; box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);" />
+        {% endif %}
+        
+        <div class="book-card__info" style="text-align: center; margin-top: 10px; width: 100%; font-size: 0.9rem; color: #5a4b3a;">
+          <h3 class="book-card__title" style="font-weight: 700; margin: 0 0 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            {{ book.title }}
+          </h3>
+          <p class="book-card__author" style="margin: 0 0 10px 0; font-style: italic; color: #7a6a57;">
+            Автор: <span>{{ book.author.name }}</span>
+          </p>
+          <a href="{% url 'book_detail' book.id %}" class="book-card__button"
+             aria-label="Подробнее о книге {{ book.title }}"
+             style="display: inline-block; margin: 0 auto; padding: 6px 14px; background-color: #8b4b4b; color: #fff; border-radius: 15px; font-size: 0.85rem; 
+                    text-decoration: none; box-shadow: 0 2px 6px rgb(139 109 75 / 0.5); transition: background-color 0.3s ease;">
+            Подробнее
+          </a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <p style="color: #7a6a57;">Рекомендуемых книг пока нет.</p>
+{% endif %}
+
+
+
+      
     </aside>
 
     <div class="catalog__books">
@@ -121,7 +199,8 @@
   {% endfor %}
 </div>
 
-    <a href="{% url 'genres' %}" class="nav__link" style="color: rgb(108, 91, 59); font-size: 25px; padding: 2%;">Все жанры</a>
+<a href="{% url 'genres' %}" class="nav__link" style="color: rgb(108, 91, 59); font-size: 25px; padding: 2%;">Все жанры</a>
+
 <div class="slider slider-genres">
   {% for genre in genres %}
     <a href="{% url 'genre_detail' genre.id %}" class="slider-item" tabindex="0" aria-label="Жанр {{ genre.name }}">

@@ -181,5 +181,10 @@
         card.classList.add('opacity-100', 'scale-100');
     });
 
+    document.getElementById('toggle-email').addEventListener('click', function () {
+        const emailText = document.getElementById('email-text');
+        emailText.classList.toggle('hidden');
+        this.textContent = emailText.classList.contains('hidden') ? 'Показать email' : 'Скрыть email';
+    });
 </script>
 {% endblock %}
