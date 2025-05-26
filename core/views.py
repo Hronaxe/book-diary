@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from user_books.forms import AuthorForm
 from .forms import ReadingDiaryEntryForm
 from .models import Book, Genre, Author, UserBookStatus
-
+import random
 
 def home(request):
     return render(request, 'home.html')
@@ -140,3 +140,36 @@ def add_diary_entry(request, pk):
     })
 
 
+def catalog(request):
+    books = Book.objects.all()
+    genres = Genre.objects.all()
+    authors = Author.objects.all()
+
+    q = request.GET.get('q', '')
+    genre_id = request.GET.get('genre', '')
+    author_id = request.GET.get('author', '')
+    year = request.GET.get('year', '')
+
+    if q:
+        books = books.filter(title__icontains=q) | books.filter(author__name__icontains=q)
+
+    if genre_id:
+        books = books.filter(genre_id=genre_id)
+
+    if author_id:
+        books = books.filter(author_id=author_id)
+
+    if year:
+        books = books.filter(year=year)
+
+    # Получаем 3 случайных книги из всего каталога (без фильтров)
+    all_books = list(Book.objects.all())
+    random_books = random.sample(all_books, min(len(all_books), 3)) if all_books else []
+
+    context = {
+        'books': books,
+        'genres': genres,
+        'authors': authors,
+        'random_books': random_books,  # передаем в шаблон случайные книги
+    }
+    return render(request, 'catalog.html', context)
