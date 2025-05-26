@@ -88,10 +88,6 @@ def book_detail(request, pk):
 
     return render(request, 'book_detail.html', {'book': book, 'status_choices': status_choices, 'user_status': user_status})
 
-
-def genres_and_authors(request):
-    return render(request, 'base.html')
-
 def diary(request):
     status_filter = request.GET.get('status')
 

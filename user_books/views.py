@@ -16,9 +16,7 @@ def user_books(request):
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
         form.instance.uploaded_by = request.user
-        print(form.errors.as_json())
         if form.is_valid():
-            print('test2')
             book = form.save(commit=False)
             book.uploaded_by = request.user
             book.save()
