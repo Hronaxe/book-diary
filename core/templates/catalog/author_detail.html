@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .author-detail {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.877);
+  border-radius: 20px;
+}
+
+.author-name {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.book-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+.book-item {
+  width: 150px;
+  text-align: center;
+}
+
+.book-cover {
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-title {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+</style>
+<section class="author-detail">
+  <div class="author-header">
+    <h1 class="author-name">{{ author.name }}</h1>
+  </div>
+
+  {% if books %}
+    <div class="author-books">
+      <h2>Книги автора:</h2>
+      <ul class="book-list">
+        {% for book in books %}
+          <li class="book-item">
+            <a href="{% url 'book_detail' book.id %}">
+              {% if book.cover %}
+                <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="book-cover" />
+              {% endif %}
+              <span class="book-title">{{ book.title }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% else %}
+    <p>У этого автора пока нет добавленных книг.</p>
+  {% endif %}
+</section>
+{% endblock %}

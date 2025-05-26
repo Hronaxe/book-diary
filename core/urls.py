@@ -25,6 +25,8 @@ urlpatterns = [
     path('profile/add_diary_entry/<int:pk>', views.add_diary_entry, name='add_diary_entry'),
     path('author',views.author,name='author'),
     path('genres',views.genres,name='genres'),
+    path('authors/<int:pk>/', views.author_detail, name='author_detail'),
+    path('genres/<int:pk>/', views.genre_detail, name='genre_detail'),
 ]
 
 if settings.DEBUG:

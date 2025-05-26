@@ -23,6 +23,19 @@ def genres(req):
     genres = Genre.objects.all()
     return render(req, 'genres.html', {'genres': genres})
 
+def author_detail(request, pk):
+    author = get_object_or_404(Author, pk=pk)
+    books = Book.objects.filter(author=author)
+    return render(request, 'catalog/author_detail.html', {
+        'author': author,
+        'books': books
+    })
+
+def genre_detail(request, pk):
+    genre = get_object_or_404(Genre, pk=pk)
+    books = Book.objects.filter(genre=genre)
+    return render(request, 'catalog/genre_detail.html', {'genre': genre, 'books': books})
+
 def custom_logout_view(request):
     logout(request)
     return redirect('/')
