@@ -122,7 +122,6 @@
 </div>
 
     <a href="{% url 'genres' %}" class="nav__link" style="color: rgb(108, 91, 59); font-size: 25px; padding: 2%;">Все жанры</a>
-
 <div class="slider slider-genres">
   {% for genre in genres %}
     <a href="{% url 'genre_detail' genre.id %}" class="slider-item" tabindex="0" aria-label="Жанр {{ genre.name }}">
