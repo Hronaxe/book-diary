@@ -9,7 +9,9 @@ from user_books.forms import AuthorForm
 from .forms import ReadingDiaryEntryForm, QuoteForm
 from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry
 import random
-
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 def home(request):
     return render(request, 'home.html')
 
@@ -41,35 +43,6 @@ def genre_detail(request, pk):
 def custom_logout_view(request):
     logout(request)
     return redirect('/')
-
-def catalog(request):
-    books = Book.objects.all()
-    genres = Genre.objects.all()
-    authors = Author.objects.all()
-
-    q = request.GET.get('q', '')
-    genre_id = request.GET.get('genre', '')
-    author_id = request.GET.get('author', '')
-    year = request.GET.get('year', '')
-
-    if q:
-        books = books.filter(title__icontains=q) | books.filter(author__name__icontains=q)
-
-    if genre_id:
-        books = books.filter(genre_id=genre_id)
-
-    if author_id:
-        books = books.filter(author_id=author_id)
-
-    if year:
-        books = books.filter(year=year)
-
-    context = {
-        'books': books,
-        'genres': genres,
-        'authors': authors,
-    }
-    return render(request, 'catalog.html', context)
 
 def genres_and_authors(request):
     authors = Author.objects.all()
@@ -175,7 +148,7 @@ def add_diary_entry(request, pk):
 
 
 def catalog(request):
-    books = Book.objects.all()
+    books_qs = Book.objects.all()
     genres = Genre.objects.all()
     authors = Author.objects.all()
 
@@ -185,29 +158,53 @@ def catalog(request):
     year = request.GET.get('year', '')
 
     if q:
-        books = books.filter(title__icontains=q) | books.filter(author__name__icontains=q)
-
+        books_qs = books_qs.filter(title__icontains=q) | books_qs.filter(author__name__icontains=q)
     if genre_id:
-        books = books.filter(genre_id=genre_id)
-
+        books_qs = books_qs.filter(genre_id=genre_id)
     if author_id:
-        books = books.filter(author_id=author_id)
-
+        books_qs = books_qs.filter(author_id=author_id)
     if year:
-        books = books.filter(year=year)
+        books_qs = books_qs.filter(year=year)
 
-    # Получаем 3 случайных книги из всего каталога (без фильтров)
+    # Применяем стабильную сортировку
+    books_qs = books_qs.order_by('title', 'id')
+
+    # Отладка: выводим общее количество книг
+    print(f"Общее количество книг после фильтрации: {books_qs.count()}")
+
+    paginator = Paginator(books_qs, 9)
+    page_number = request.GET.get('page', 1)
+
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        # Если страница пустая, возвращаем последнюю доступную страницу или пустой ответ для AJAX
+        page_obj = paginator.page(paginator.num_pages) if paginator.num_pages > 0 else []
+
     all_books = list(Book.objects.all())
     random_books = random.sample(all_books, min(len(all_books), 3)) if all_books else []
 
-    context = {
-        'books': books,
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        print(f"AJAX запрос - страница: {page_number}")
+        print(f"Количество книг на странице: {len(page_obj.object_list)}")
+        print(f"ID книг на странице: {[book.id for book in page_obj.object_list]}")
+        print(f"Есть следующая страница: {page_obj.has_next()}")
+
+        html = render_to_string('partials/book_list.html', {'books': page_obj})
+        return JsonResponse({
+            'html': html,
+            'has_next': page_obj.has_next(),
+            'current_page': page_obj.number,
+            'total_pages': paginator.num_pages,
+            'book_ids': [book.id for book in page_obj.object_list],
+        })
+
+    return render(request, 'catalog.html', {
+        'books': page_obj,
         'genres': genres,
         'authors': authors,
-        'random_books': random_books,  # передаем в шаблон случайные книги
-    }
-    return render(request, 'catalog.html', context)
-
+        'random_books': random_books,
+    })
 @login_required
 def add_quote(request, book_id):
 

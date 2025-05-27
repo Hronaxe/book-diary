@@ -1,7 +1,6 @@
 {% load static %}
-
 {% for book in books %}
-  <article class="book-card" tabindex="0" aria-label="Книга {{ book.title }}">
+  <article class="book-card" tabindex="0" aria-label="Книга {{ book.title }}" data-book-id="{{ book.id }}">
     <a href="{% url 'book_detail' book.id %}" class="book-card__link">
       {% if book.cover %}
         <img src="{{ book.cover.url }}" alt="Обложка книги {{ book.title }}" class="book-card__image" loading="lazy" />
@@ -9,32 +8,19 @@
         <img src="{% static 'images/default_cover.jpg' %}" alt="Обложка книги {{ book.title }}" class="book-card__image" loading="lazy" />
       {% endif %}
     </a>
-    
     <div class="book-card__info" style="text-align: center;">
       <h3 class="book-card__title">
-        <a href="{% url 'book_detail' book.id %}" class="book-card__title-link">
-          {{ book.title }}
-        </a>
+        <a href="{% url 'book_detail' book.id %}" class="book-card__title-link">{{ book.title }}</a>
       </h3>
-      <p class="book-card__author">
-        Автор: <span>{{ book.author.name }}</span>
-      </p>
-      
-     
-      
+      <p class="book-card__author">Автор: <span>{{ book.author.name }}</span></p>
       <p class="book-card__genre">Жанр: {{ book.genre.name }}</p>
       {% if book.average_rating %}
         <div class="book-card__rating">
           <span class="book-card__rating-star">★</span>
           <span class="book-card__rating-value">{{ book.average_rating }}</span>
         </div>
-      {% else %}
-        <!-- <p class="book-card__no-rating">Нет оценок</p> -->
       {% endif %}
-
-      <a href="{% url 'book_detail' book.id %}" class="book-card__button" aria-label="Подробнее о книге {{ book.title }}">
-        Подробнее
-      </a>
+      <a href="{% url 'book_detail' book.id %}" class="book-card__button" aria-label="Подробнее о книге {{ book.title }}">Подробнее</a>
     </div>
   </article>
 {% endfor %}
