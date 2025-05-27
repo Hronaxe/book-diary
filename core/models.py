@@ -28,7 +28,7 @@ class Book(models.Model):
     age_limit = models.CharField(max_length=10, verbose_name='Возрастное ограничение')
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, verbose_name='Жанр')
     annotation = models.TextField(verbose_name='Аннотация')
-    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
+    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=True)
     text_file = models.FileField(upload_to=TEXT_UPLOAD_PATH, blank=True, null=True, verbose_name='Файл')
 
     cover = models.ImageField(upload_to=COVER_UPLOAD_PATH, verbose_name='Обложка')
