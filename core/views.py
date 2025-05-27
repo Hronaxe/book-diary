@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.sessions.models import Session
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
@@ -223,7 +224,7 @@ def add_quote(request, book_id):
 
 def book_quotes(request, book_id):
     book = get_object_or_404(Book, id=book_id)
-    quotes = Quote.objects.filter(book=book).order_by('-created_at')
+    quotes = Quote.objects.filter(book=book, user = request.user).order_by('-created_at')
 
     return render(request, 'book_quotes.html', {
         'book': book,
