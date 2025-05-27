@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -20,6 +21,7 @@ def user_books(request):
             book = form.save(commit=False)
             book.uploaded_by = request.user
             book.save()
+            messages.success(request, f'Книга "{book.title}" успешно добавлена!')
             return redirect('user_books')
     else:
         form = BookForm()

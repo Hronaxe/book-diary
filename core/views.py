@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -158,6 +159,7 @@ def add_diary_entry(request, pk):
                 book=book,
                 defaults={'status': 'read'},
             )
+            messages.success(request, f'Оценка "{book.title}" успешно добавлена!')
 
             return redirect('book_detail', pk=book.id)
     else:
