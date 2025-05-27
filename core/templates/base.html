@@ -129,6 +129,57 @@
       margin-bottom: 5%;
     }
     }
+     .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 30px;
+    max-width: 700px;
+    width: 90%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    font-size: 16px;
+    line-height: 1.5;
+    animation: slideDown 0.3s ease;
+  }
+
+  .modal-content.success { border-left: 6px solid #4CAF50; }
+  .modal-content.info { border-left: 6px solid #2196F3; }
+  .modal-content.warning { border-left: 6px solid #ff9800; }
+  .modal-content.error,
+  .modal-content.danger { border-left: 6px solid #f44336; }
+
+  .modal-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+  }
+
+  /* @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  } */
+
+  @keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
   </style>
 </head>
 <body>
@@ -163,11 +214,17 @@
     </div>
   </header>
 
-  <div class="col-md-8">
-    {% if messages %} {% for message in messages %}
-    <div class="alert alert-{{ message.tag }}">{{ message }}</div>
-    {% endfor%} {% endif %}
-  </div>
+  {% if messages %}
+  {% for message in messages %}
+    <div class="modal-overlay" id="modal-message">
+      <div class="modal-content {{ message.tags }}">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        {{ message }}
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
 
   <div class="main container">
     {% block content %}{% endblock %}
@@ -179,6 +236,23 @@
     </div>
   </footer>
 </div>
+<script>
+  function closeModal() {
+    const modal = document.getElementById("modal-message");
+    if (modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  window.onclick = function (event) {
+    const modal = document.getElementById("modal-message");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  setTimeout(closeModal, 3000);
+</script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>
