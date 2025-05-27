@@ -689,7 +689,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Lora', serif;
-  background: url('/media/covers/back5.jpg');
+  background: url('/static/pictures/back5.jpg');
   background-size: cover;
   background-repeat: inherit;
    /* background: linear-gradient(to left, #fffaf0, #e4d1b9); */
