@@ -11,8 +11,8 @@ import random
 def home(request):
     return render(request, 'home.html')
 
-def registration(request):
-    return render(request, 'register.html')
+# def registration(request):
+#     return render(request, 'registration_form.html')
 
 
 def author(req):

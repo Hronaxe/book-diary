@@ -118,7 +118,7 @@
     .header, .main, .footer, .wrapper {
       transition: margin-left .3s;
     }
-    
+
     @media (max-width: 768px){
     .burger-checkbox:checked ~ .menu-list{
       width: 100%;
@@ -149,18 +149,17 @@
   <header class="header">
     <div class="container header__container">
       <a href="{% url 'index' %}" class="header__logo">Читательский дневник</a>
-     <nav class="nav">
-  <ul class="nav__list">
-    {% if user.is_authenticated %}
-      <li><a class="nav-item nav-link" href="{% url 'profile' %}"><i class="fas fa-user" style="transform: scale(1.1);"></i></a></li>
-      <li><a class="nav-item nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-in-alt" style="transform: scale(1.3);"></i></a></li>
-    {% else %}
-      <li><a class="nav-item nav-link" href="{% url 'login' %}">Авторизация</a></li>
-      <li><a class="nav-item nav-link" href="{% url 'register' %}">Регистрация</a></li>
-    {% endif %}
-  </ul>
-</nav>
-
+      <nav class="nav">
+        <ul class="nav__list">
+          {% if user.is_authenticated %}
+            <li><a class="nav-item nav-link" href="{% url 'profile' %}"><i class="fas fa-user" style="transform: scale(1.1);"></i></a></li>
+            <li><a class="nav-item nav-link" href="{% url 'custom_logout' %}"><i class="fas fa-sign-in-alt" style="transform: scale(1.3);"></i></a></li>
+          {% else %}
+            <li><a class="nav-item nav-link" href="{% url 'login' %}">Авторизация</a></li>
+            <li><a class="nav-item nav-link" href="{% url 'django_registration_register' %}">Регистрация</a></li>
+          {% endif %}
+        </ul>
+      </nav>
     </div>
   </header>
 

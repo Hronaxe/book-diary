@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+from django.conf.global_settings import EMAIL_BACKEND, EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_USE_TLS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -139,4 +141,19 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'profile'
 
+# Registration settings
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_OPEN = True
+REGISTRATION_SALT = "registration"
 
+AUTH_USER_MODEL = "users.User"
+
+#Email connfiguration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'anatoliburcenco@yandex.com'
+EMAIL_HOST_PASSWORD = 'nlrmrldsytqqjkrr'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'anatoliburcenco@yandex.com'

@@ -10,9 +10,9 @@ from . import views
 
 urlpatterns = [
     path("", views.catalog, name="index"),
-    path("register", views.registration, name = "register"),
+    #path("register", views.registration, name = "register"),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', views.custom_logout_view, name='logout'),
+    path('logout/', views.custom_logout_view, name='custom_logout'),
     path('profile/', user_views.profile, name='profile'),
     path('catalog/', views.catalog, name='catalog'),
     path('info/', views.genres_and_authors, name='genres_and_authors'),
