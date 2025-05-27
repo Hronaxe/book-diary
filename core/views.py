@@ -7,7 +7,7 @@ from django.http import HttpResponse
 
 from user_books.forms import AuthorForm
 from .forms import ReadingDiaryEntryForm, QuoteForm
-from .models import Book, Genre, Author, UserBookStatus, Quote
+from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry
 import random
 
 def home(request):
@@ -143,32 +143,34 @@ def set_status(request, pk):
         )
     return redirect('book_detail', pk=pk)
 
-@login_required
 def add_diary_entry(request, pk):
     book = get_object_or_404(Book, pk=pk)
+    existing_entry = ReadingDiaryEntry.objects.filter(user=request.user, book=book).first()
 
     if request.method == 'POST':
-        form = ReadingDiaryEntryForm(request.POST)
+        form = ReadingDiaryEntryForm(request.POST, instance=existing_entry)
         if form.is_valid():
             entry = form.save(commit=False)
             entry.user = request.user
             entry.book = book
             entry.save()
 
-            obj, created = UserBookStatus.objects.update_or_create(
+            # Mark the book as read
+            UserBookStatus.objects.update_or_create(
                 user=request.user,
                 book=book,
                 defaults={'status': 'read'},
             )
-            messages.success(request, f'Оценка "{book.title}" успешно добавлена!')
 
+            messages.success(request, f'Оценка для книги "{book.title}" успешно сохранена!')
             return redirect('book_detail', pk=book.id)
     else:
-        form = ReadingDiaryEntryForm(initial={'book': book})
+        form = ReadingDiaryEntryForm(instance=existing_entry)
 
     return render(request, 'review_entry.html', {
         'form': form,
         'book': book,
+        'existing_entry': existing_entry,
     })
 
 
