@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Цитаты из книги: {{ book.title }}</h1>
+
+  <a href="{%url 'add_quote' book.id %}" class="btn btn-primary" style="color: #8f6443;">
+    Добавить цитату
+  </a>
+
+  {% if quotes %}
+    <ul class="space-y-4">
+      {% for quote in quotes %}
+        <li class="p-4 border rounded bg-gray-50">
+          <strong>Стр. {{ quote.page }}:</strong><br>
+          <blockquote class="italic">“{{ quote.text }}”</blockquote>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Цитат пока нет.</p>
+  {% endif %}
+{% endblock %}

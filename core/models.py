@@ -66,7 +66,8 @@ class Book(models.Model):
 class Quote(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    text = models.TextField()
+    page = models.PositiveIntegerField(verbose_name='Страница')
+    text = models.TextField(verbose_name='Цитата')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

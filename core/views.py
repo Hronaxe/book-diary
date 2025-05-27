@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
 from user_books.forms import AuthorForm
-from .forms import ReadingDiaryEntryForm
-from .models import Book, Genre, Author, UserBookStatus
+from .forms import ReadingDiaryEntryForm, QuoteForm
+from .models import Book, Genre, Author, UserBookStatus, Quote
 import random
 
 def home(request):
@@ -204,3 +204,28 @@ def catalog(request):
         'random_books': random_books,  # передаем в шаблон случайные книги
     }
     return render(request, 'catalog.html', context)
+
+@login_required
+def add_quote(request, book_id):
+
+    if request.method == 'POST':
+        form = QuoteForm(request.POST)
+        form.instance.book_id = book_id
+        if form.is_valid():
+            quote = form.save(commit=False)
+            quote.user = request.user
+            quote.save()
+            return redirect('book_quotes', book_id)
+    else:
+        form = QuoteForm()
+    return render(request, 'add_quotes.html', {'form': form})
+
+
+def book_quotes(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    quotes = Quote.objects.filter(book=book).order_by('-created_at')
+
+    return render(request, 'book_quotes.html', {
+        'book': book,
+        'quotes': quotes
+    })

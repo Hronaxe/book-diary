@@ -413,6 +413,9 @@
   <a href="{{ book.text_file.url }}" class="btn btn-primary" style="color: #8f6443;">
     Читать
   </a>
+  <a href="{%url 'book_quotes' book.id %}" class="btn btn-primary" style="color: #8f6443;">
+    Цитаты
+  </a>
   {% endif %}
 
   <div class="book-detail__annotation">
