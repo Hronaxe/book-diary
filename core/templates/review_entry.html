@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .filter-form__label{
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 25px rgb(105, 105, 105);
+    max-width: 800px;
+    margin: 2rem auto;
+  }
+  .filter-form__label h2 {
+    color: #2e1e0f;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .filter-form__label p{
+    padding: 10px 0;
+    border-radius: 10px;
+    width: auto;
+  }
+  .filter-form__label label {
+    font-weight: 600;
+    color: #3e2f1c;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .filter-form__label input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1bfa4;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  .filter-form__label textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1bfa4;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 120px;
+  }
+  .filter-form__label input:focus,
+  .filter-form__label textarea:focus {
+    outline: none;
+    border-color: #a37853;
+    box-shadow: 0 0 0 3px rgba(163, 120, 83, 0.2);
+  }
+  .btn {
+    background-color: #a37853;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+  }
+  .btn:hover {
+    background-color: #8f6443;
+  }
+  .btn-secondary {
+    background-color: #6c757d;
+  }
+  .btn-secondary:hover {
+    background-color: #545b62;
+  }
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+  }
+  .book-info {
+    background-color: #fff8f0;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid #a37853;
+  }
+  .book-info h3 {
+    margin: 0 0 5px 0;
+    color: #2e1e0f;
+  }
+  .book-info p {
+    margin: 0;
+    color: #666;
+  }
+</style>
+
+<form method="post" class="filter-form__label">
+  <div class="book-info">
+    <h3>{{ book.title }}</h3>
+    <p>{{ book.author.name }}</p>
+  </div>
+  
+  {% if action == 'edit' %}
+    <h2>Редактировать отзыв</h2>
+  {% else %}
+    <h2>Добавить отзыв для книги</h2>
+  {% endif %}
+  
+  {% csrf_token %}
+  {{ form.as_p }}
+  
+  <div class="form-actions">
+    <button type="submit" class="btn">
+      {% if action == 'edit' %}Сохранить изменения{% else %}Добавить отзыв{% endif %}
+    </button>
+    <a href="{% url 'book_detail' book.pk %}" class="btn btn-secondary">Отмена</a>
+  </div>
+</form>
+{% endblock %}

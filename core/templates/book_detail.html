@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+{% block title %}{{ book.title }} — Читательский дневник{% endblock %}
+{% block content %}
+<style>
+  :root {
+    --primary-color: #a37853;
+    --primary-hover: #8f6443;
+    --secondary-color: #d1bfa4;
+    --secondary-hover: #c4ab8e;
+    --background-color: #fff8f0;
+    --text-color: #3e2f1c;
+    --heading-color: #2e1e0f;
+    --border-color: #d1bfa4;
+    --shadow-color: rgba(62, 47, 28, 0.15);
+    --annotation-border: #a37853;
+  }
+
+  .book-detail {
+    padding: 2.5rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    max-width: 80%;
+    margin: 2.5rem auto;
+    transition: transform 0.3s ease;
+  }
+
+  .book-detail:hover {
+    transform: translateY(-4px);
+  }
+
+  .book-detail__top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .book-detail__cover {
+    flex: 0 0 240px;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px var(--shadow-color);
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .book-detail__cover:hover {
+    transform: scale(1.05);
+  }
+
+  .book-detail__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;  
+    text-align: center;
+    gap: 0.8rem;
+    font-size: 1.1rem;
+    min-width: 0;
+  }
+
+  .book-detail__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: var(--heading-color);
+    line-height: 1.2;
+  }
+
+  .book-detail__author,
+  .book-detail__genre,
+  .book-detail__publisher,
+  .book-detail__year,
+  .book-detail__pages,
+  .book-detail__age-limit {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .book-rating {
+    border-radius: 15px;
+    padding: 0.6rem 2rem;
+    margin: 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 20px var(--shadow-color);
+    display: inline-block;
+    min-width: 200px;
+  }
+  .book-rating__value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0 0.2rem;
+  }
+
+  .book-rating__stars {
+    font-size: 1rem;
+    color: #ffd700;
+    margin: 0.2rem 0;
+    letter-spacing: 2px;
+  }
+
+  .book-rating__count {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .book-rating__no-rating {
+    font-size: 0.95rem;
+    color: #888;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .book-detail__status-form {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .book-detail__status-select {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #fff;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .book-detail__status-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(163, 120, 83, 0.2);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn--primary {
+    background-color: var(--primary-color);
+    color: #fff;
+    margin-top: 25px;
+  }
+
+  .btn--primary:hover {
+    background-color: var(--primary-hover);
+  }
+
+  .btn--secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+  }
+
+  .btn--secondary:hover {
+    background-color: var(--secondary-hover);
+  }
+
+  .book-detail__annotation {
+    margin-top: 2.5rem;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-left: 5px solid var(--annotation-border);
+    border-radius: 8px;
+  }
+
+  .book-detail__annotation h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--heading-color);
+  }
+
+  .book-detail__annotation p {
+    margin: 0;
+    line-height: 1.7;
+    color: var(--text-color);
+  }
+
+  .book-detail__download {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .book-detail {
+      padding: 1.5rem;
+      margin: 1.5rem;
+    }
+
+    .book-detail__top {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .book-detail__cover {
+      flex: 0 0 180px;
+      max-width: 180px;
+    }
+
+    .book-detail__title {
+      font-size: 1.6rem;
+      text-align: center;
+    }
+
+    .book-detail__status-form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .book-detail__status-select,
+    .btn {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .book-detail__info {
+      font-size: 1rem;
+    }
+
+    .book-rating {
+      min-width: auto;
+      display: block;
+      padding: 0.6rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .book-detail {
+      padding: 1rem;
+      margin: 1rem;
+    }
+
+    .book-detail__cover {
+      flex: 0 0 140px;
+      max-width: 140px;
+    }
+
+    .book-detail__title {
+      font-size: 1.4rem;
+    }
+
+    .book-detail__info {
+      font-size: 0.95rem;
+    }
+
+    .btn-primary:hover {
+      color: #a37853;
+    }
+  }
+
+.similar-books-section {
+  margin-top: 60px;
+  padding: 40px 20px;
+  border-radius: 16px;
+}
+
+.similar-books-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 2rem;
+  border-left: 5px solid var(--primary-color);
+  padding-left: 12px;
+}
+
+.similar-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.similar-book-card {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.similar-book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.similar-book-cover {
+  width: 100%;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.similar-book-cover img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.similar-no-cover {
+  color: #aaa;
+  font-size: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.similar-book-info {
+  padding: 16px;
+  flex: 1;
+}
+
+.similar-book-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--text-color);
+}
+
+.similar-book-author {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.similar-book-year {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+</style>
+
+<section class="book-detail" aria-labelledby="book-title">
+  <div class="book-detail__top">
+    <img
+      src="{{ book.cover.url }}"
+      alt="Обложка книги {{ book.title }}"
+      class="book-detail__cover"
+      loading="lazy"
+    />
+    <div class="book-detail__info">
+      <h2 class="book-detail__title" id="book-title"> {{ book.title }}</h2>
+      <p class="book-detail__author">Автор: {{ book.author.name }}</p>
+      <p class="book-detail__genre">Жанр: {{ book.genre.name }}</p>
+      <p class="book-detail__publisher">Издатель: {{ book.publisher }}</p>
+      <p class="book-detail__year">Год: {{ book.year }}</p>
+      <p class="book-detail__pages">Страниц: {{ book.page_count }}</p>
+      <p class="book-detail__age-limit">Возрастное ограничение: {{ book.age_limit }}</p>
+
+      <div class="book-rating">
+        {% if average_rating %}
+          <p class="book-rating__value">{{ average_rating }}/5</p>
+          <div class="book-rating__stars">
+            {% for i in "12345" %}
+              {% if forloop.counter <= average_rating|floatformat:0|add:0 %}
+                ★
+              {% else %}
+                ☆
+              {% endif %}
+            {% endfor %}
+          </div>
+          <p class="book-rating__count">На основе {{ ratings_count }} оценки {{ ratings_count|pluralize:"и,и,ий" }}</p>
+        {% else %}
+          <p class="book-rating__no-rating">Оценок пока нет</p>
+        {% endif %}
+      </div>
+
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url 'set_status' book.id %}" class="book-detail__status-form">
+        {% csrf_token %}
+        <label for="status-select">Статус чтения:</label>
+        <select name="status" id="status-select" class="book-detail__status-select" aria-describedby="status-help">
+          {% for value, label in status_choices %}
+            <option value="{{ value }}" {% if user_status == value %}selected{% endif %}>
+              {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn--primary">Сохранить</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  <a href="{% url 'add_diary_entry' book.id  %}" class="btn btn-primary" style="color: #8f6443;">
+    Добавить в дневник
+  </a>
+  {% if book.text_file %}
+  <a href="{{ book.text_file.url }}" class="btn btn-primary" style="color: #8f6443;">
+    Читать
+  </a>
+  {% endif %}
+
+  <div class="book-detail__annotation">
+    <h3>Аннотация</h3>
+    <p>{{ book.annotation|linebreaks }}</p>
+  </div>
+
+  {% if book.text_file %}
+  <div class="book-detail__download">
+    <a href="{{ book.text_file.url }}" class="btn btn--secondary" download aria-label="Скачать книгу {{ book.title }}">Скачать книгу</a>
+  </div>
+  {% endif %}
+
+{% if similar_books %}
+<section class="similar-books-section">
+  <h2 class="similar-books-title">Похожие книги</h2>
+  <div class="similar-books-grid">
+    {% for similar in similar_books %}
+      <a href="{% url 'book_detail' similar.pk %}" class="similar-book-card">
+        <div class="similar-book-cover">
+          {% if similar.cover %}
+            <img src="{{ similar.cover.url }}" alt="Обложка {{ similar.title }}">
+          {% else %}
+            <div class="similar-no-cover">Нет обложки</div>
+          {% endif %}
+        </div>
+        <div class="similar-book-info">
+          <h3 class="similar-book-title">{{ similar.title }}</h3>
+          <p class="similar-book-author">Автор: {{ similar.author.name }}</p>
+          <span class="similar-book-year">Год: {{ similar.year }}</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+</section>
+{% endblock %}

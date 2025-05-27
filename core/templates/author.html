@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Авторы{% endblock %}
+
+{% block content %}
+<style>
+  .authors-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .author-bubble {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #d4bfa3;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    transition: transform 0.3s;
+  }
+
+  .author-bubble:hover {
+    transform: scale(1.05);
+    background: #b89b6a;
+    cursor: pointer;
+  }
+</style>
+<a href="{% url 'author' %}" class="nav__link" style="color: rgb(108, 91, 59); font-size: 25px; padding: 2%;">Все авторы</a>
+<div class="slider slider-authors">
+  {% for author in authors %}
+    <a href="{% url 'author_detail' author.id %}" class="slider-item" tabindex="0" aria-label="Автор {{ author.name }}">
+      {% if author.photo %}
+        <img src="{{ author.photo.url }}" alt="Фото автора {{ author.name }}" class="slider-item__image" loading="lazy" />
+      {% else %}
+        <div class="slider-item__placeholder">{{ author.name|slice:":1" }}</div>
+      {% endif %}
+      <span class="slider-item__name">{{ author.name }}</span>
+    </a>
+  {% endfor %}
+</div>
+{% endblock %}
