@@ -80,13 +80,42 @@ def genres_and_authors(request):
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
+    
+    # Получаем среднюю оценку и количество оценок
+    average_rating = book.average_rating()
+    ratings_count = book.ratings_count()
+    
+    # Преобразуем рейтинг в целое число для звездочек, если он существует
+    rating_stars = int(round(average_rating)) if average_rating else 0
+    
+    # Получаем статус книги для текущего пользователя (если авторизован)
+    user_status = None
+    if request.user.is_authenticated:
+        try:
+            status_obj = UserBookStatus.objects.get(user=request.user, book=book)
+            user_status = status_obj.status
+        except UserBookStatus.DoesNotExist:
+            user_status = None
+    
+    # Получаем похожие книги (по жанру или автору)
+    similar_books = Book.objects.filter(
+        genre=book.genre
+    ).exclude(pk=book.pk)[:6]  # Исключаем текущую книгу и берем 6 похожих
+    
+    # Варианты статусов для формы
     status_choices = UserBookStatus.STATUS_CHOICES
-    try:
-        user_status = UserBookStatus.objects.get(user=request.user, book=book).status
-    except UserBookStatus.DoesNotExist:
-        user_status = None
-
-    return render(request, 'book_detail.html', {'book': book, 'status_choices': status_choices, 'user_status': user_status})
+    
+    context = {
+        'book': book,
+        'average_rating': average_rating,
+        'rating_stars': rating_stars,
+        'ratings_count': ratings_count,
+        'user_status': user_status,
+        'status_choices': status_choices,
+        'similar_books': similar_books,
+    }
+    
+    return render(request, 'book_detail.html', context)
 
 def diary(request):
     status_filter = request.GET.get('status')

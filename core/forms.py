@@ -1,14 +1,14 @@
 from django import forms
 from .models import ReadingDiaryEntry
 
-RATING_WIDGET = forms.NumberInput(attrs={'min': 1, 'max': 5, 'type': 'widget'})
+RATING_WIDGET = forms.NumberInput(attrs={'min': 1, 'max': 5, 'type': 'number'})
 
 class ReadingDiaryEntryForm(forms.ModelForm):
     class Meta:
         model = ReadingDiaryEntry
         fields = [
             'emotions_rating', 'plot_originality', 'character_development',
-            'world_building', 'romance', 'humor', 'meaning', #'summary'
+            'world_building', 'romance', 'humor', 'meaning',
         ]
         widgets = {
             'emotions_rating': RATING_WIDGET,
