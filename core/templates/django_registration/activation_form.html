@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block content %}
+    <main class="container mx-auto px-4 py-6">
+        <h1>Активация аккаунта</h1>
+
+        <section class="max-w-2xl">
+            {% if activation_error or form.activation_key.errors%}
+                <div class="alert alert-error mb-6" role="alert">
+                    <span>
+                        {% if activation_error.code == "already_activated" %}
+                            Этот аккаунт уже активирован
+                        {% elif activation_error.code == "bad_username" %}
+                            Акканут для этого кода более не доступен.
+                        {% elif activation_error.code == "expired" %}
+                            Этот код активации просрочен.
+                        {% else %}
+                            Ошибка активации. Проверьте правильность кода.
+                        {% endif %}
+                    </span>
+                </div>
+            {% endif %}
+
+            <p class="mb-6 prose">Пожалуйста введите код активации. Если Вы попали на эту страницу через ссылку, он уже должен быть введен.</p>
+
+            <form method="post" action="" class="max-w-md">
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <label for="{{ form.activation_key.id_for_label }}">
+                    {% trans "Ключ активации" %}
+                  </label>
+                  {{ form.activation_key }}
+                </div>
+
+                <div class="mt-6">
+                    <button type="submit" class="btn btn-primary" name="member_signup">Активировать аккаунт</button>
+                </div>
+            </form>
+
+            <div class="mt-4">
+                <a href="{% url 'login' %}" class="link link-primary">Авторизация</a>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

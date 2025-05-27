@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class Author(models.Model):
@@ -26,7 +27,7 @@ class Book(models.Model):
     age_limit = models.CharField(max_length=10, verbose_name='Возрастное ограничение')
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, verbose_name='Жанр')
     annotation = models.TextField(verbose_name='Аннотация')
-    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
     text_file = models.FileField(upload_to=TEXT_UPLOAD_PATH, blank=True, null=True, verbose_name='Файл')
 
     cover = models.ImageField(upload_to=COVER_UPLOAD_PATH, verbose_name='Обложка')
@@ -34,7 +35,7 @@ class Book(models.Model):
         return self.title
 
 class Quote(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,7 +50,7 @@ class UserBookStatus(models.Model):
         ('planned', 'В планах'),
         ('dropped', 'Брошено'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
 
@@ -60,7 +61,7 @@ class UserBookStatus(models.Model):
         return f"{self.user.name} - {self.book.title} - {self.status}"
 
 class ReadingDiaryEntry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     emotions_rating = models.PositiveSmallIntegerField(default=1)  # 1-5
     plot_originality = models.PositiveSmallIntegerField(default=1)  # 1-5

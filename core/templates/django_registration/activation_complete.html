@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container mx-auto px-4 py-6">
+        <h1>Активация завершена</h1>
+
+        <div class="max-w-2xl">
+            <div class="alert alert-success mb-6">
+                <i class="bi bi-check-circle-fill shrink-0 h-6 w-6"></i>
+                <span>Ваш аккаунт был успешно активирован.</span>
+            </div>
+
+            <div class="prose">
+                <p>Вы можете <a href="{% url 'login' %}">войти</a> с помощью почты и пароля.</p>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+        </div>
+    </main>
+{% endblock content %}

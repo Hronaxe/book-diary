@@ -23,5 +23,17 @@ from users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("core.urls")),
-    path('register/', user_views.register, name ='register')
-]
+    path(
+        "accounts/register/",
+        user_views.CustomRegistrationView.as_view(),
+        name="django_registration_register",
+    ),
+    # path(
+    #     "accounts/activate/",
+    #     user_views.ActivationView.as_view(),
+    #     name="django_registration_activate",
+    # ),
+    path("accounts/", include("django_registration.backends.activation.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+
+    ]
