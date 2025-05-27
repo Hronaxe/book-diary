@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Avg
 
 # Create your models here.
 class Author(models.Model):
@@ -32,6 +33,34 @@ class Book(models.Model):
     cover = models.ImageField(upload_to=COVER_UPLOAD_PATH, verbose_name='Обложка')
     def __str__(self):
         return self.title
+    
+    def average_rating(self):
+        """Вычисляет среднюю оценку книги по всем критериям"""
+        entries = ReadingDiaryEntry.objects.filter(book=self)
+        if not entries.exists():
+            return None
+
+        fields = [
+            'emotions_rating',
+            'plot_originality', 
+            'character_development',
+            'world_building',
+            'romance',
+            'humor',
+            'meaning',
+        ]
+        
+        total = 0
+        for field in fields:
+            avg_value = entries.aggregate(avg=Avg(field))['avg'] or 0
+            total += avg_value
+        
+        return round(total / len(fields), 1)
+    
+    def ratings_count(self):
+        """Возвращает количество оценок для этой книги"""
+        return ReadingDiaryEntry.objects.filter(book=self).count()
+
 
 class Quote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
