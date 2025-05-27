@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% if messages %}
+<div style="max-width:700px; margin: 20px auto; padding: 1rem; border-radius: 0.5rem; background-color: #fff3e0; color: #5d4037; text-align: center; box-shadow: 0 3px 6px rgba(0,0,0,0.1);">
+    {% for message in messages %}
+        <strong>{{ message }}</strong>
+        <br>
+        <a href="{% url 'book_detail' book.pk %}" style="display:inline-block; margin-top:10px; padding: 0.5rem 1.5rem; background-color: #5d4037; color: white; border-radius: 0.5rem; text-decoration:none; font-weight:bold;">Перейти к книге</a>
+    {% endfor %}
+</div>
+{% endif %}

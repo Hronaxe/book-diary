@@ -22,8 +22,12 @@
 }
 
 .book-item {
-  width: 150px;
+  width: 20%;
   text-align: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: flex;
+  border-radius: 10px;
 }
 
 .book-cover {
@@ -41,12 +45,12 @@
 </style>
 <section class="author-detail">
   <div class="author-header">
-    <h1 class="author-name">{{ author.name }}</h1>
+    
   </div>
 
   {% if books %}
     <div class="author-books">
-      <h2>Книги автора:</h2>
+    <span style="font-size: 1.7em;">Книги автора:</span><span class="author-name" style="font-size: 2em;font-weight: bold;"> {{ author.name }}</h1>
       <ul class="book-list">
         {% for book in books %}
           <li class="book-item">

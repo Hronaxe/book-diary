@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Inter:wght@400;600&family=Lora:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
     body {
       transition: margin-left .3s;
@@ -22,8 +23,8 @@
 
     .burger {
       position: fixed;
-      top: 5.5%;
-      left: 20px;
+      top: 5%;
+      left: 10px;
       z-index: 1000;
       cursor: pointer;
       display: block;
@@ -80,8 +81,8 @@
       background: rgb(179, 149, 94);
       list-style-type: none;
       transform: translateX(-100%);
-      transition: transform .3s;
-      width: 200px;
+      transition: transform .1s;
+      width: 240px;
       height: 100vh;
       z-index: 9;
       box-shadow: 1px 0px 10px rgb(55, 55, 55);
@@ -90,7 +91,7 @@
     .menu-list a {
       padding: 10px 15px;
       transition-duration: 1s;
-      font-size: 18px;
+      font-size: 100%;
       border: 1px solid rgb(255, 255, 255);
       border-radius: 20px;
       color: white;
@@ -102,7 +103,10 @@
       color: #b89b6a;
       border: none;
     }
-
+    .menu-list li{
+      font-size: 1.3em;
+      margin-bottom: 10%;
+    }
     .burger-checkbox:checked ~ .menu-list {
       transform: translateX(0);
     }
@@ -114,10 +118,21 @@
     .header, .main, .footer, .wrapper {
       transition: margin-left .3s;
     }
+
+    @media (max-width: 768px){
+    .burger-checkbox:checked ~ .menu-list{
+      width: 100%;
+      text-align: center;
+      font-size: 1.4em;
+    }
+    .menu-list li{
+      margin-bottom: 5%;
+    }
+    }
   </style>
 </head>
 <body>
-
+<div class="wrapper"></div>
 {% if user.is_authenticated %}
   <input type="checkbox" id="burger-checkbox" class="burger-checkbox">
   <label for="burger-checkbox" class="burger"></label>
@@ -130,7 +145,7 @@
   </ul>
 {% endif %}
 
-<div class="wrapper">
+
   <header class="header">
     <div class="container header__container">
       <a href="{% url 'index' %}" class="header__logo">Читательский дневник</a>
@@ -158,6 +173,6 @@
     </div>
   </footer>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>

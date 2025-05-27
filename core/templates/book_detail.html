@@ -55,6 +55,8 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;  
+    text-align: center;
     gap: 0.8rem;
     font-size: 1.1rem;
     min-width: 0;
@@ -76,6 +78,42 @@
   .book-detail__age-limit {
     font-size: 1.1rem;
     line-height: 1.5;
+    margin: 0;
+  }
+
+  .book-rating {
+    border-radius: 15px;
+    padding: 0.6rem 2rem;
+    margin: 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 20px var(--shadow-color);
+    display: inline-block;
+    min-width: 200px;
+  }
+  .book-rating__value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0 0.2rem;
+  }
+
+  .book-rating__stars {
+    font-size: 1rem;
+    color: #ffd700;
+    margin: 0.2rem 0;
+    letter-spacing: 2px;
+  }
+
+  .book-rating__count {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .book-rating__no-rating {
+    font-size: 0.95rem;
+    color: #888;
+    font-style: italic;
     margin: 0;
   }
 
@@ -187,12 +225,6 @@
       text-align: center;
     }
 
-    .book-detail__info {
-      align-items: center;
-      text-align: center;
-      font-size: 1rem;
-    }
-
     .book-detail__status-form {
       flex-direction: column;
       align-items: stretch;
@@ -202,6 +234,16 @@
     .btn {
       width: 100%;
       max-width: 300px;
+    }
+
+    .book-detail__info {
+      font-size: 1rem;
+    }
+
+    .book-rating {
+      min-width: auto;
+      display: block;
+      padding: 0.6rem 1.5rem;
     }
   }
 
@@ -223,11 +265,96 @@
     .book-detail__info {
       font-size: 0.95rem;
     }
-    .btn-primary:hover{ 
+
+    .btn-primary:hover {
       color: #a37853;
     }
   }
+
+.similar-books-section {
+  margin-top: 60px;
+  padding: 40px 20px;
+  border-radius: 16px;
+}
+
+.similar-books-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 2rem;
+  border-left: 5px solid var(--primary-color);
+  padding-left: 12px;
+}
+
+.similar-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.similar-book-card {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.similar-book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.similar-book-cover {
+  width: 100%;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.similar-book-cover img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.similar-no-cover {
+  color: #aaa;
+  font-size: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.similar-book-info {
+  padding: 16px;
+  flex: 1;
+}
+
+.similar-book-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--text-color);
+}
+
+.similar-book-author {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.similar-book-year {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
 </style>
+
 <section class="book-detail" aria-labelledby="book-title">
   <div class="book-detail__top">
     <img
@@ -244,6 +371,25 @@
       <p class="book-detail__year">Год: {{ book.year }}</p>
       <p class="book-detail__pages">Страниц: {{ book.page_count }}</p>
       <p class="book-detail__age-limit">Возрастное ограничение: {{ book.age_limit }}</p>
+
+      <div class="book-rating">
+        {% if average_rating %}
+          <p class="book-rating__value">{{ average_rating }}/5</p>
+          <div class="book-rating__stars">
+            {% for i in "12345" %}
+              {% if forloop.counter <= average_rating|floatformat:0|add:0 %}
+                ★
+              {% else %}
+                ☆
+              {% endif %}
+            {% endfor %}
+          </div>
+          <p class="book-rating__count">На основе {{ ratings_count }} оценки {{ ratings_count|pluralize:"и,и,ий" }}</p>
+        {% else %}
+          <p class="book-rating__no-rating">Оценок пока нет</p>
+        {% endif %}
+      </div>
+
       {% if user.is_authenticated %}
       <form method="post" action="{% url 'set_status' book.id %}" class="book-detail__status-form">
         {% csrf_token %}
@@ -274,11 +420,35 @@
     <p>{{ book.annotation|linebreaks }}</p>
   </div>
 
-
   {% if book.text_file %}
   <div class="book-detail__download">
     <a href="{{ book.text_file.url }}" class="btn btn--secondary" download aria-label="Скачать книгу {{ book.title }}">Скачать книгу</a>
   </div>
   {% endif %}
+
+{% if similar_books %}
+<section class="similar-books-section">
+  <h2 class="similar-books-title">Похожие книги</h2>
+  <div class="similar-books-grid">
+    {% for similar in similar_books %}
+      <a href="{% url 'book_detail' similar.pk %}" class="similar-book-card">
+        <div class="similar-book-cover">
+          {% if similar.cover %}
+            <img src="{{ similar.cover.url }}" alt="Обложка {{ similar.title }}">
+          {% else %}
+            <div class="similar-no-cover">Нет обложки</div>
+          {% endif %}
+        </div>
+        <div class="similar-book-info">
+          <h3 class="similar-book-title">{{ similar.title }}</h3>
+          <p class="similar-book-author">Автор: {{ similar.author.name }}</p>
+          <span class="similar-book-year">Год: {{ similar.year }}</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
 </section>
 {% endblock %}

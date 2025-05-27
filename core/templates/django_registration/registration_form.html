@@ -72,16 +72,18 @@
 
 <div class="content-section">
   <!-- Sign up form -->
-  <form method="POST">
-    {% csrf_token %}
-    <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Регистрация</legend>
-      {{ form|crispy }}
-    </fieldset>
-    <div class="form-group">
-      <button class="btn btn-outline-info" type="submit">Продолжить</button>
-    </div>
-  </form>
+  <form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <fieldset class="form-group">
+    <legend class="border-bottom mb-4">Регистрация</legend>
+    {{ form|crispy }}
+  </fieldset>
+  <div class="form-group">
+    <button class="btn btn-outline-info" type="submit">Продолжить</button>
+  </div>
+
+  
+</form>
 
   <!-- Sign in form -->
   <div class="border-top pt-3">

@@ -1,7 +1,96 @@
 {% extends 'base.html' %}
 {% block title %}Дневник чтения — Читательский дневник{% endblock %}
 {% block content %}
+{% load static %}
+
 <style>
+.book-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    max-width: 900px;
+}
+
+.book-list__item {
+    background-color: #faf5ee;
+    border: 1px solid #d7cdbd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.07);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    width: 90%;
+}
+
+.book-list__item:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+.book-list__link {
+    color: #3e2f1c;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+}
+
+.book-list__image {
+    width: 100%;
+    height: 210px;
+    object-fit: contain;
+    background-color: #f7f2e9;
+    border-bottom: 1px solid #d7cdbd;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+.book-list__details {
+    padding: 12px 14px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book-list__title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    line-height: 1.2;
+    min-height: 2.6em; /* примерно 2 строки */
+    color: #4b3b1b;
+}
+
+.book-list__status {
+    font-size: 0.9rem;
+    color: #7a6a4d;
+    font-style: italic;
+}
+
+@media (max-width: 600px) {
+    .book-list {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 16px;
+    }
+
+    .book-list__image {
+        height: 180px;
+    }
+
+    .book-list__title {
+        font-size: 1rem;
+        min-height: 2.4em;
+    }
+}
 .diary {
     max-width: 800px;
     margin: 0 auto;
@@ -98,6 +187,7 @@
     .book-list li a {
         font-size: 1rem;
     }
+    
 }
 </style>
 <section class="diary">
@@ -113,13 +203,26 @@
 </nav>
 
 <ul class="book-list">
-    {% for item in user_books %}
-        <li>
-            <a href = "{% url 'book_detail' item.book.id %}"><strong>{{ item.book.title }}</strong> — {{ item.get_status_display }}</a>
-        </li>
-    {% empty %}
-        <li>Нет книг по данному статусу.</li>
-    {% endfor %}
+  {% for item in user_books %}
+    <li class="book-list__item">
+      <a href="{% url 'book_detail' item.book.id %}" class="book-list__link">
+        <img
+          src="{% if item.book.cover %}{{ item.book.cover.url }}{% else %}{% static 'images/default_cover.jpg' %}{% endif %}"
+          alt="Обложка книги {{ item.book.title }}"
+          class="book-list__image"
+          loading="lazy"
+        />
+        <div class="book-list__details">
+          <h3 class="book-list__title">{{ item.book.title }}</h3>
+          <p class="book-list__status">{{ item.get_status_display }}</p>
+        </div>
+      </a>
+    </li>
+  {% empty %}
+    <li style="font-style: italic; color: #888;">Нет книг по данному статусу.</li>
+  {% endfor %}
 </ul>
+
+
 </section>
 {% endblock %}

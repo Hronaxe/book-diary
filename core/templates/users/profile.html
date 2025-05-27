@@ -168,9 +168,6 @@
         <div class="flex-1">
             <h2>{{ user.username }}</h2>
             <p>Дата регистрации: {{ user.date_joined|date:"d E Y" }}</p>
-            <button id="toggle-email" aria-expanded="false" aria-controls="email-text">
-                Показать email
-            </button>
             <p id="email-text" class="hidden">📧 {{ user.email }}</p>
         </div>
     </div>

@@ -8,7 +8,12 @@
     background: rgba(255, 255, 255, 0.775);
     border:10px ;
   }
+  .sliders{
+    padding: 20px;
+  }
 </style>
+
+<div class="sliders">
 <h1>Жанр: {{ genre.name }}</h1>
 
 {% if books %}
@@ -26,4 +31,6 @@
 {% else %}
   <p>Книг в этом жанре пока нет.</p>
 {% endif %}
+</div>
+
 {% endblock %}
