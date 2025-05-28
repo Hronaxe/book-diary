@@ -87,4 +87,9 @@ function dismissAddAnotherPopup(win, newId, newRepr, fieldName) {
         <button class="btn btn-outline-info" type="submit">Сохранить</button>
     </div>
 </form>
+
+    {% for book in books %}
+        <a href="{% url 'book_detail' book.id %}">{{ book.name }}</a>
+    {% endfor %}
+
 {% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from core.models import Book
 from user_books.forms import BookForm, AuthorForm, GenreForm
 
 
@@ -25,7 +26,9 @@ def user_books(request):
             return redirect('user_books')
     else:
         form = BookForm()
-    return render(request, 'user_books/user_books.html', {'form': form})
+    users_books = Book.objects.filter(uploaded_by=request.user)
+
+    return render(request, 'user_books/user_books.html', {'form': form, 'books': users_books})
 
 def add_author_popup(request):
     if request.method == 'POST':
