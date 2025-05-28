@@ -40,6 +40,59 @@
         border: 1px solid #ccc;
         padding: 0.5rem;
     }
+    .book-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.book-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  text-align: center;
+  padding: 1rem;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.book-card__image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.book-card__title {
+  font-size: 1rem;
+  color: #8f6443;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.book-card__title:hover {
+  text-decoration: underline;
+}
+@media (max-width: 768px) {
+  .book-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    padding: 1rem;
+  }
+
+  .book-card__image {
+    height: 200px;
+  }
+}
+
 </style>
 
 <script>
@@ -87,9 +140,19 @@ function dismissAddAnotherPopup(win, newId, newRepr, fieldName) {
         <button class="btn btn-outline-info" type="submit">Сохранить</button>
     </div>
 </form>
+<div class="book-gallery-general" style="background: white; border-radius: 15px;">
+ <h1 style="text-align: left; margin-left: 4%; padding: 20px 0 0px 0">Мои Книги</h1>
+   <div class="book-gallery">
+  {% for book in books %}
+    <div class="book-card animate-fade-in">
+      <a href="{% url 'book_detail' book.id %}">
+        <img src="{{ book.cover.url }}" alt="Обложка книги {{ book.title }}" class="book-card__image" loading="lazy" />
+        <h3 class="book-card__title">{{ book.title }}</h3>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+</div>
 
-    {% for book in books %}
-        <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a>
-    {% endfor %}
 
 {% endblock %}
