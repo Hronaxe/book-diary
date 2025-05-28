@@ -1,6 +1,82 @@
-{% extends "base.html" %} {% load crispy_forms_tags %} {% block content %}
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #f5f5dc; /* светло-бежевый фон */
+    color: #3e2723; /* тёмно-коричневый */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .content-section {
+    max-width: 500px;
+    margin: 3rem auto;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  }
+
+  .content-section legend {
+    font-size: 1.5rem;
+    color: #5d4037;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-outline-info {
+    border-color: #8f6443;
+    color: #8f6443;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+
+  .btn-outline-info:hover {
+    background-color: #8f6443;
+    color: #fff;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    padding: 0.6rem;
+    width: 100%;
+    margin-top: 0.3rem;
+    font-size: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .border-top {
+    border-top: 1px solid #ddd;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  .border-top a {
+    color: #8f6443;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .border-top a:hover {
+    text-decoration: underline;
+  }
+
+  .text-muted {
+    color: #6d4c41;
+  }
+</style>
+
 <div class="content-section">
-  <!-- Sign up form -->
   <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
@@ -11,7 +87,7 @@
       <button class="btn btn-outline-info" type="submit">Авторизоваться</button>
     </div>
   </form>
-  <!-- Sign in form -->
+
   <div class="border-top pt-3">
     <small class="text-muted">
       Нужен аккаунт?
