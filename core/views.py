@@ -8,7 +8,7 @@ from django.db.models import Q
 
 from user_books.forms import AuthorForm
 from .forms import ReadingDiaryEntryForm, QuoteForm
-from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry, normalize_text
+from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry, normalize_text, Note
 import random
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -225,6 +225,20 @@ def book_quotes(request, book_id):
     return render(request, 'book_quotes.html', {
         'book_title': book.title,
         'quotes': quotes,
+        'book_id': book_id
+    })
+
+def book_notes(request, book_id):
+    if book_id == 0:
+        book = get_object_or_404(Book, id=1)
+        quotes = Note.objects.filter(user=request.user).select_related('book').order_by('-created_at')
+    else:
+        book = get_object_or_404(Book, id=book_id)
+        quotes = Note.objects.filter(book=book_id, user = request.user).order_by('-created_at')
+
+    return render(request, 'book_quotes.html', {
+        'book_title': book.title,
+        'notes': quotes,
         'book_id': book_id
     })
 
