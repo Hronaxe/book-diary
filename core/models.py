@@ -99,6 +99,16 @@ class Quote(models.Model):
     def __str__(self):
         return f"Quote by {self.user.name} for {self.book.title}"
 
+class Note(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    page = models.PositiveIntegerField(verbose_name='Страница')
+    text = models.TextField(verbose_name='Заметка')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Quote by {self.user.name} for {self.book.title}"
+
 class UserBookStatus(models.Model):
     STATUS_CHOICES = (
         ('reading', 'Читаю'),
