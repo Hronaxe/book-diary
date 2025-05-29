@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 
 from user_books.forms import AuthorForm
-from .forms import ReadingDiaryEntryForm, QuoteForm
+from .forms import ReadingDiaryEntryForm, QuoteForm, NoteForm
 from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry, normalize_text, Note
 import random
 from django.core.paginator import Paginator
@@ -213,7 +213,7 @@ def add_quote(request, book_id):
         form = QuoteForm()
     return render(request, 'add_quotes.html', {'form': form})
 
-
+@login_required
 def book_quotes(request, book_id):
     if book_id == 0:
         book = get_object_or_404(Book, id=1)
@@ -243,17 +243,19 @@ def add_note(request, book_id):
         form = NoteForm()
     return render(request, 'add_notes.html', {'form': form})
 
+@login_required
 def book_notes(request, book_id):
     if book_id == 0:
         book = get_object_or_404(Book, id=1)
-        quotes = Note.objects.filter(user=request.user).select_related('book').order_by('-created_at')
+        notes = Note.objects.filter(user=request.user).select_related('book').order_by('-created_at')
     else:
         book = get_object_or_404(Book, id=book_id)
-        quotes = Note.objects.filter(book=book_id, user = request.user).order_by('-created_at')
+        notes = Note.objects.filter(book=book_id, user = request.user).order_by('-created_at')
 
-    return render(request, 'book_quotes.html', {
+    print(notes)
+    return render(request, 'book_notes.html', {
         'book_title': book.title,
-        'notes': quotes,
+        'notes': notes,
         'book_id': book_id
     })
 

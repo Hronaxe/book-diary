@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="quote-form-container animate-fade-in">
+  <h1 class="form-title">Добавить Заметки</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="styled-submit-btn">Сохранить</button>
+  </form>
+</div>
+
+<style>
+  .quote-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .form-title {
+    font-size: 2em;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    color: #333;
+  }
+
+  .styled-submit-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.8rem 1.8rem;
+    background: linear-gradient(135deg, #8f6443, #c38a5e);
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(143, 100, 67, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .styled-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(143, 100, 67, 0.4);
+  }
+
+  .styled-submit-btn:active {
+    transform: translateY(0);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+</style>
+{% endblock %}

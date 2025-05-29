@@ -28,7 +28,9 @@ urlpatterns = [
     path('authors/<int:pk>/', views.author_detail, name='author_detail'),
     path('genres/<int:pk>/', views.genre_detail, name='genre_detail'),
     path('books/<int:book_id>/quotes/add/', views.add_quote, name='add_quote'),
-    path('books/<int:book_id>/quotes/', views.book_quotes, name='book_quotes')
+    path('books/<int:book_id>/quotes/', views.book_quotes, name='book_quotes'),
+    path('books/<int:book_id>/notes/add/', views.add_note, name='add_note'),
+    path('books/<int:book_id>/notes/', views.book_notes, name='book_notes')
 ]
 
 if settings.DEBUG:

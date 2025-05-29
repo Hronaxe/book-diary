@@ -406,15 +406,21 @@
       {% endif %}
     </div>
   </div>
+  {%if user.is_authenticated %}
   <a href="{% url 'add_diary_entry' book.id  %}" class="btn btn-primary" style="color: #8f6443;">
     Дневник
   </a>
+  <a href="{%url 'book_quotes' book.id %}" class="btn btn-primary" style="color: #8f6443;">
+    Цитаты
+  </a>
+    <a href="{%url 'book_notes' book.id %}" class="btn btn-primary" style="color: #8f6443;">
+    Заметки
+  </a>
+  {% endif %}
+
   {% if book.text_file %}
   <a href="{{ book.text_file.url }}" class="btn btn-primary" style="color: #8f6443;">
     Читать
-  </a>
-  <a href="{%url 'book_quotes' book.id %}" class="btn btn-primary" style="color: #8f6443;">
-    Цитаты
   </a>
   {% endif %}
 
