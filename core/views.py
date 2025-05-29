@@ -232,12 +232,12 @@ def author(req):
     authors_qs = Author.objects.all()
 
     # Получаем параметры из GET запроса
-    search_query = req.GET.get('q', '').strip()
+    search_query = normalize_text(req.GET.get('q', '').strip())
     letter_filter = req.GET.get('letter', '').strip()
 
     # Поиск по имени автора (без учета регистра)
     if search_query:
-        authors_qs = authors_qs.filter(name__icontains=search_query).distinct()
+        authors_qs = authors_qs.filter(normalized_name__icontains=search_query).distinct()
 
     # Фильтрация по первой букве имени (без учета регистра)
     if letter_filter:
@@ -265,12 +265,12 @@ def author(req):
 def genres(req):
     genres_qs = Genre.objects.all()
 
-    search_query = req.GET.get('q', '').strip()
+    search_query = normalize_text(req.GET.get('q', '').strip())
     letter_filter = req.GET.get('letter', '').strip()
 
     # Поиск по названию жанра (без учета регистра)
     if search_query:
-        genres_qs = genres_qs.filter(name__icontains=search_query).distinct()
+        genres_qs = genres_qs.filter(normalized_name__icontains=search_query).distinct()
 
     # Фильтрация по первой букве названия (без учета регистра)
     if letter_filter:
