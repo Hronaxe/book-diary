@@ -3,6 +3,10 @@ from django.db import models
 from django.conf import settings
 from django.db.models import Avg
 
+from django.contrib.auth.models import User
+
+from django.conf import settings
+
 # Create your models here.
 class Author(models.Model):
     name = models.CharField(max_length=255)
@@ -105,3 +109,21 @@ class ReadingDiaryEntry(models.Model):
 
     def __str__(self):
         return f"Diary entry by {self.user.name} for {self.book.title}"
+
+
+class Note(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name="Книга")
+    title = models.CharField(max_length=200, verbose_name="Заголовок заметки")
+    content = models.TextField(verbose_name="Содержание заметки")
+    page_number = models.PositiveIntegerField(null=True, blank=True, verbose_name="Номер страницы")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+    
+    class Meta:
+        verbose_name = "Заметка"
+        verbose_name_plural = "Заметки"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.title} - {self.book.title}"

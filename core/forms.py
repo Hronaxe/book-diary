@@ -1,5 +1,5 @@
 from django import forms
-from .models import ReadingDiaryEntry, Quote
+from .models import ReadingDiaryEntry, Quote, Note
 
 RATING_WIDGET = forms.NumberInput(attrs={'min': 1, 'max': 5, 'type': 'number'})
 
@@ -42,4 +42,9 @@ class QuoteForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'rows': 4}),
         }
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['title']
 

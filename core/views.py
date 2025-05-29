@@ -292,3 +292,83 @@ def genres(req):
     }
 
     return render(req, 'genres.html', context)
+
+
+# views.py - добавить в существующий файл views.py
+
+from .forms import ReadingDiaryEntryForm, QuoteForm, NoteForm  # добавить NoteForm
+from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry, Note  # добавить Note
+
+@login_required
+def add_note(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.user = request.user
+            note.book = book
+            note.save()
+            messages.success(request, f'Заметка к книге "{book.title}" успешно добавлена!')
+            return redirect('book_notes', book_id=book_id)
+    else:
+        form = NoteForm()
+    
+    return render(request, 'add_note.html', {
+        'form': form,
+        'book': book
+    })
+
+@login_required
+def book_notes(request, book_id):
+    if book_id == 0:
+        # Показать все заметки пользователя
+        notes = Note.objects.filter(user=request.user).select_related('book').order_by('-created_at')
+        book_title = "Все мои заметки"
+        book = None
+    else:
+        book = get_object_or_404(Book, id=book_id)
+        notes = Note.objects.filter(book=book, user=request.user).order_by('-created_at')
+        book_title = book.title
+    
+    return render(request, 'book_notes.html', {
+        'book': book,
+        'book_title': book_title,
+        'notes': notes,
+        'book_id': book_id
+    })
+
+@login_required
+def edit_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id, user=request.user)
+    
+    if request.method == 'POST':
+        form = NoteForm(request.POST, instance=note)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Заметка успешно обновлена!')
+            return redirect('book_notes', book_id=note.book.id)
+    else:
+        form = NoteForm(instance=note)
+    
+    return render(request, 'edit_note.html', {
+        'form': form,
+        'note': note,
+        'book': note.book
+    })
+
+@login_required
+def delete_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id, user=request.user)
+    book_id = note.book.id
+    
+    if request.method == 'POST':
+        note.delete()
+        messages.success(request, 'Заметка успешно удалена!')
+        return redirect('book_notes', book_id=book_id)
+    
+    return render(request, 'delete_note.html', {
+        'note': note,
+        'book': note.book
+    })

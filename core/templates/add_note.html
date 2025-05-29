@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% block title %}Добавить заметку — {{ book.title }}{% endblock %}
+{% block content %}
+<style>
+  :root {
+    --primary-color: #a37853;
+    --primary-hover: #8f6443;
+    --secondary-color: #d1bfa4;
+    --background-color: #fff8f0;
+    --text-color: #3e2f1c;
+    --heading-color: #2e1e0f;
+    --border-color: #d1bfa4;
+    --shadow-color: rgba(62, 47, 28, 0.15);
+  }
+
+  .note-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background-color: var(--background-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+  }
+
+  .note-form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .book-info {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+  }
+
+  .book-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(163, 120, 83, 0.2);
+  }
+
+  .form-control::placeholder {
+    color: #999;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn--primary {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  .btn--primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+  }
+
+  .btn--secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+  }
+
+  .btn--secondary:hover {
+    background-color: #c4ab8e;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .note-form-container {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+
+    .note-form-title {
+      font-size: 1.6rem;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="note-form-container">
+  <h1 class="note-form-title">Добавить заметку</h1>
+  
+  <div class="book-info">
+    <p class="book-title">{{ book.title }}</p>
+    <p>Автор: {{ book.author.name }}</p>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}" class="form-label">
+        {{ form.title.label }}
+      </label>
+      {{ form.title }}
+      {% if form.title.errors %}
+        <div class="form-errors">
+          {% for error in form.title.errors %}
+            <p class="error">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.content.id_for_label }}" class="form-label">
+        {{ form.content.label }}
+      </label>
+      {{ form.content }}
+      {% if form.content.errors %}
+        <div class="form-errors">
+          {% for error in form.content.errors %}
+            <p class="error">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.page_number.id_for_label }}" class="form-label">
+        {{ form.page_number.label }}
+      </label>
+      {{ form.page_number }}
+      {% if form.page_number.errors %}
+        <div class="form-errors">
+          {% for error in form.page_number.errors %}
+            <p class="error">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn--primary">Сохранить заметку</button>
+      <a href="{% url 'book_detail' book.id %}" class="btn btn--secondary" style="height: 40px;">Отмена</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
