@@ -33,6 +33,12 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name="Почта")
     # disable username field
     name = None
+    username = models.CharField(
+        ("username"),
+        max_length=150,
+        unique=False,
+        validators=[AbstractUser.username_validator],
+    )
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
 
