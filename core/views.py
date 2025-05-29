@@ -8,7 +8,7 @@ from django.db.models import Q
 
 from user_books.forms import AuthorForm
 from .forms import ReadingDiaryEntryForm, QuoteForm
-from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry
+from .models import Book, Genre, Author, UserBookStatus, Quote, ReadingDiaryEntry, normalize_text
 import random
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -142,15 +142,15 @@ def catalog(request):
     genres = Genre.objects.all()
     authors = Author.objects.all()
 
-    q = request.GET.get('q', '').strip()
+    q = normalize_text(request.GET.get('q', '').strip())
     genre_id = request.GET.get('genre', '')
     author_id = request.GET.get('author', '')
     year = request.GET.get('year', '')
 
     if q:
         books_qs = books_qs.filter(
-            Q(title__icontains=q) |
-            Q(author__name__icontains=q)
+            Q(normalized_title__icontains=q) |
+            Q(author__normalized_name__icontains=q)
         ).distinct()
     if genre_id:
         books_qs = books_qs.filter(genre_id=genre_id)

@@ -1,17 +1,36 @@
+import unicodedata
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from django.db.models import Avg
 
+def normalize_text(text):
+    if text is None:
+        return ''
+    return ''.join(
+        c for c in unicodedata.normalize('NFKD', text)
+        if not unicodedata.combining(c)
+    ).lower()
+
 # Create your models here.
 class Author(models.Model):
     name = models.CharField(max_length=255)
+    normalized_name = models.CharField(max_length=255, editable=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.normalized_name = normalize_text(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 class Genre(models.Model):
     name = models.CharField(max_length=100)
+    normalized_name = models.CharField(max_length=255, editable=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.normalized_name = normalize_text(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -31,7 +50,14 @@ class Book(models.Model):
     uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=True)
     text_file = models.FileField(upload_to=TEXT_UPLOAD_PATH, blank=True, null=True, verbose_name='Файл')
 
+    normalized_title = models.CharField(max_length=255, editable=False, blank=True)
+
     cover = models.ImageField(upload_to=COVER_UPLOAD_PATH, verbose_name='Обложка')
+
+    def save(self, *args, **kwargs):
+        self.normalized_title = normalize_text(self.title)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
