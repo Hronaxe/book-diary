@@ -2,18 +2,24 @@
 
 {% block content %}
 <div class="book-quotes-container">
-  <h1 class="book-title animate-fade-in" style="text-align: left;font-size: 2em;">Цитаты из книги: <span class="text-gradient">{{ book.title }}</span></h1>
+  {% if book_id == 0 %}
+    <h1 class="book-title animate-fade-in" style="text-align: left;font-size: 2em;">Цитаты</h1>
+  {% else %}
+  <h1 class="book-title animate-fade-in" style="text-align: left;font-size: 2em;">Цитаты из книги: <span class="text-gradient">{{ book_title }}</span></h1>
+  {% endif %}
 <br>
-  <a href="{% url 'add_quote' book.id %}" class="add-quote-btn" style="color: rgb(237, 237, 237);">
+  {% if book_id != 0 %}
+  <a href="{% url 'add_quote' book_id %}" class="add-quote-btn" style="color: rgb(237, 237, 237);">
     <span class="plus-icon">+</span> Добавить цитату
   </a>
+  {% endif %}
 
   {% if quotes %}
     <ul class="quotes-list">
       {% for quote in quotes %}
         <li class="quote-card animate-float">
           <div class="quote-header">
-            <span class="page-badge">Стр. {{ quote.page }}</span>
+            <span class="page-badge">Стр. {{ quote.page }}</span> {% if book_id == 0 %}<a class="page-badge" href="{% url 'book_detail' quote.book.id %}">"{{ quote.book.title }}" {% endif %}</a>
           </div>
           <blockquote class="quote-text">"{{ quote.text }}"</blockquote>
           <div class="quote-footer">

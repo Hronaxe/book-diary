@@ -222,10 +222,15 @@ def add_quote(request, book_id):
 
 
 def book_quotes(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    quotes = Quote.objects.filter(book=book, user = request.user).order_by('-created_at')
+    if book_id == 0:
+        book = get_object_or_404(Book, id=1)
+        quotes = Quote.objects.filter(user=request.user).select_related('book').order_by('-created_at')
+    else:
+        book = get_object_or_404(Book, id=book_id)
+        quotes = Quote.objects.filter(book=book_id, user = request.user).order_by('-created_at')
 
     return render(request, 'book_quotes.html', {
-        'book': book,
-        'quotes': quotes
+        'book_title': book.title,
+        'quotes': quotes,
+        'book_id': book_id
     })
