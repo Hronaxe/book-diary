@@ -43,3 +43,15 @@ class QuoteForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'rows': 4}),
         }
 
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Quote
+        fields = ['page', 'text']
+        labels = {
+            'page': 'Страница',
+            'text': 'Заметка',
+        }
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 4}),
+        }
+

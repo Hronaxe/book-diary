@@ -228,6 +228,21 @@ def book_quotes(request, book_id):
         'book_id': book_id
     })
 
+@login_required
+def add_note(request, book_id):
+
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        form.instance.book_id = book_id
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.user = request.user
+            note.save()
+            return redirect('book_notes', book_id)
+    else:
+        form = NoteForm()
+    return render(request, 'add_notes.html', {'form': form})
+
 def book_notes(request, book_id):
     if book_id == 0:
         book = get_object_or_404(Book, id=1)
