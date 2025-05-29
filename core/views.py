@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.db.models import Q
 
 from user_books.forms import AuthorForm
 from .forms import ReadingDiaryEntryForm, QuoteForm
@@ -12,20 +13,9 @@ import random
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+
 def home(request):
     return render(request, 'home.html')
-
-# def registration(request):
-#     return render(request, 'registration_form.html')
-
-
-def author(req):
-    authors = Author.objects.all()
-    return render(req, 'author.html', {'authors': authors})
-
-def genres(req):
-    genres = Genre.objects.all()
-    return render(req, 'genres.html', {'genres': genres})
 
 def author_detail(request, pk):
     author = get_object_or_404(Author, pk=pk)
@@ -152,13 +142,16 @@ def catalog(request):
     genres = Genre.objects.all()
     authors = Author.objects.all()
 
-    q = request.GET.get('q', '')
+    q = request.GET.get('q', '').strip()
     genre_id = request.GET.get('genre', '')
     author_id = request.GET.get('author', '')
     year = request.GET.get('year', '')
 
     if q:
-        books_qs = books_qs.filter(title__icontains=q) | books_qs.filter(author__name__icontains=q)
+        books_qs = books_qs.filter(
+            Q(title__icontains=q) |
+            Q(author__name__icontains=q)
+        ).distinct()
     if genre_id:
         books_qs = books_qs.filter(genre_id=genre_id)
     if author_id:
@@ -234,3 +227,68 @@ def book_quotes(request, book_id):
         'quotes': quotes,
         'book_id': book_id
     })
+
+def author(req):
+    authors_qs = Author.objects.all()
+
+    # Получаем параметры из GET запроса
+    search_query = req.GET.get('q', '').strip()
+    letter_filter = req.GET.get('letter', '').strip()
+
+    # Поиск по имени автора (без учета регистра)
+    if search_query:
+        authors_qs = authors_qs.filter(name__icontains=search_query).distinct()
+
+    # Фильтрация по первой букве имени (без учета регистра)
+    if letter_filter:
+        authors_qs = authors_qs.filter(name__istartswith=letter_filter).distinct()
+
+    # Сортировка по имени
+    authors_qs = authors_qs.order_by('name')
+
+    # Получаем все уникальные первые буквы имен авторов для алфавитного фильтра
+    all_authors = Author.objects.values_list('name', flat=True)
+    alphabet_letters = sorted(set(
+        author[0].upper() for author in all_authors
+        if author and len(author) > 0
+    ))
+
+    context = {
+        'authors': authors_qs,
+        'search_query': search_query,
+        'letter_filter': letter_filter,
+        'alphabet_letters': alphabet_letters,
+    }
+
+    return render(req, 'author.html', context)
+
+def genres(req):
+    genres_qs = Genre.objects.all()
+
+    search_query = req.GET.get('q', '').strip()
+    letter_filter = req.GET.get('letter', '').strip()
+
+    # Поиск по названию жанра (без учета регистра)
+    if search_query:
+        genres_qs = genres_qs.filter(name__icontains=search_query).distinct()
+
+    # Фильтрация по первой букве названия (без учета регистра)
+    if letter_filter:
+        genres_qs = genres_qs.filter(name__istartswith=letter_filter).distinct()
+
+    genres_qs = genres_qs.order_by('name')
+
+    all_genres = Genre.objects.values_list('name', flat=True)
+    alphabet_letters = sorted(set(
+        genre[0].upper() for genre in all_genres
+        if genre and len(genre) > 0
+    ))
+
+    context = {
+        'genres': genres_qs,
+        'search_query': search_query,
+        'letter_filter': letter_filter,
+        'alphabet_letters': alphabet_letters,
+    }
+
+    return render(req, 'genres.html', context)

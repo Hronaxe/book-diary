@@ -23,22 +23,9 @@ class CustomRegistrationView(RegistrationView):
 
     def form_valid(self, form):
         check_email_message = """Спасибо за регистрацию. Для продолжения смотрите сообщение отправленное на Вашу почту"""
-        # notice we use `self.request` here since the request is a member of the CustomRegistrationView instance
         messages.info(self.request, check_email_message)
 
         return super().form_valid(form)
-
-# def register(request):
-#     if request.method == 'POST':
-#         form = UserRegisterForm(request.POST)
-#         if form.is_valid():
-#             form.save() # Save user to Database
-#             username = form.cleaned_data.get('username') # Get the username that is submitted
-#             messages.success(request, f'Account created for {username}!') # Show sucess message when account is created
-#             return redirect('login') # Redirect user to login
-#     else:
-#         form = UserRegisterForm()
-#     return render(request, 'registration_form.html', {'form': form})
 
 @login_required # Require user logged in before they can access profile page
 def profile(request):

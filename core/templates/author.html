@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block title %}Авторы{% endblock %}
-
 {% block content %}
 <style>
   .authors-wrapper {
@@ -9,7 +8,6 @@
     gap: 20px;
     padding: 20px 0;
   }
-
   .author-bubble {
     width: 100px;
     height: 100px;
@@ -24,24 +22,184 @@
     font-size: 14px;
     transition: transform 0.3s;
   }
-
   .author-bubble:hover {
     transform: scale(1.05);
     background: #b89b6a;
     cursor: pointer;
   }
+  
+  .search-filter-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    min-width: 250px;
+  }
+  
+  .search-btn {
+    padding: 10px 20px;
+    background: #d4bfa3;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  .search-btn:hover {
+    background: #b89b6a;
+  }
+  
+  .clear-btn {
+    padding: 10px 20px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s;
+  }
+  
+  .clear-btn:hover {
+    background: #545b62;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .alphabet-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 15px;
+  }
+  
+  .alphabet-letter {
+    padding: 8px 12px;
+    background: #e9ecef;
+    color: #495057;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+  
+  .alphabet-letter:hover {
+    background: #d4bfa3;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .alphabet-letter.active {
+    background: #d4bfa3;
+    color: white;
+    border-color: #b89b6a;
+  }
+  
+  .results-info {
+    margin: 20px 0;
+    padding: 10px;
+    background: #e7f3ff;
+    border-left: 4px solid #007bff;
+    border-radius: 5px;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+    font-size: 18px;
+  }
 </style>
+
 <a href="{% url 'author' %}" class="nav__link" style="color: rgb(108, 91, 59); font-size: 25px; padding: 2%;">Все авторы</a>
-<div class="slider slider-authors">
-  {% for author in authors %}
-    <a href="{% url 'author_detail' author.id %}" class="slider-item" tabindex="0" aria-label="Автор {{ author.name }}">
-      {% if author.photo %}
-        <img src="{{ author.photo.url }}" alt="Фото автора {{ author.name }}" class="slider-item__image" loading="lazy" />
-      {% else %}
-        <div class="slider-item__placeholder">{{ author.name|slice:":1" }}</div>
-      {% endif %}
-      <span class="slider-item__name">{{ author.name }}</span>
-    </a>
-  {% endfor %}
+
+<!-- Секция поиска и фильтрации -->
+<div class="search-filter-section">
+  <form method="GET" class="search-form">
+    <input 
+      type="text" 
+      name="q" 
+      class="search-input" 
+      placeholder="Поиск авторов по имени..." 
+      value="{{ search_query }}"
+    >
+    <button type="submit" class="search-btn">Найти</button>
+    {% if search_query or letter_filter %}
+      <a href="{% url 'author' %}" class="clear-btn">Очистить</a>
+    {% endif %}
+    <!-- Скрытое поле для сохранения фильтра по букве при поиске -->
+    {% if letter_filter and not request.GET.letter %}
+      <input type="hidden" name="letter" value="{{ letter_filter }}">
+    {% endif %}
+  </form>
+  
+  <!-- Алфавитный фильтр -->
+  <div class="alphabet-filter">
+    <strong style="margin-right: 10px;">Фильтр по алфавиту:</strong>
+    {% for letter in alphabet_letters %}
+      <a href="?letter={{ letter }}{% if search_query %}&q={{ search_query }}{% endif %}" 
+         class="alphabet-letter {% if letter_filter == letter %}active{% endif %}">
+        {{ letter }}
+      </a>
+    {% endfor %}
+  </div>
 </div>
+
+<!-- Информация о результатах -->
+{% if search_query or letter_filter %}
+  <div class="results-info">
+    {% if search_query and letter_filter %}
+      Результаты поиска "{{ search_query }}" по букве "{{ letter_filter }}": найдено {{ authors.count }} автор{{ authors.count|pluralize:"ов" }}
+    {% elif search_query %}
+      Результаты поиска "{{ search_query }}": найдено {{ authors.count }} автор{{ authors.count|pluralize:"ов" }}
+    {% elif letter_filter %}
+      Авторы на букву "{{ letter_filter }}": найдено {{ authors.count }} автор{{ authors.count|pluralize:"ов" }}
+    {% endif %}
+  </div>
+{% endif %}
+
+<!-- Список авторов -->
+{% if authors %}
+  <div class="slider slider-authors">
+    {% for author in authors %}
+      <a href="{% url 'author_detail' author.id %}" class="slider-item" tabindex="0" aria-label="Автор {{ author.name }}">
+        {% if author.photo %}
+          <img src="{{ author.photo.url }}" alt="Фото автора {{ author.name }}" class="slider-item__image" loading="lazy" />
+        {% else %}
+          <div class="slider-item__placeholder">{{ author.name|slice:":1" }}</div>
+        {% endif %}
+        <span class="slider-item__name">{{ author.name }}</span>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="no-results">
+    {% if search_query or letter_filter %}
+      <p>По вашему запросу авторы не найдены.</p>
+      <a href="{% url 'author' %}" class="clear-btn">Показать всех авторов</a>
+    {% else %}
+      <p>Авторы отсутствуют.</p>
+    {% endif %}
+  </div>
+{% endif %}
+
 {% endblock %}
