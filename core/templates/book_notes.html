@@ -21,7 +21,7 @@
           <div class="quote-header">
             <span class="page-badge">Стр. {{ note.page }}</span> {% if book_id == 0 %}<a class="page-badge" href="{% url 'book_detail' note.book.id %}">"{{ note.book.title }}" {% endif %}</a>
           </div>
-          <blockquote class="quote-text">"{{ note.text }}"</blockquote>
+          <a class="quote-text" style="height: 100%">"{{ note.text }}"</a>
           <div class="quote-footer">
             <span class="quote-date">{{ note.created_at|date:"d M Y" }}</span>
           </div>
@@ -156,6 +156,9 @@
     position: relative;
     padding-left: 1rem;
     margin-left: -2%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
   
   .quote-text::before {
